@@ -3,7 +3,7 @@
 import { Document, Page, Text, View, StyleSheet, Font, Link } from '@react-pdf/renderer'
 import type { PlanState } from '@/types/database'
 import { getT, type Locale } from '@/lib/i18n/translations'
-import { exName } from '@/lib/i18n/exercise'
+import { exName, exDesc } from '@/lib/i18n/exercise'
 
 Font.register({
   family: 'Roboto',
@@ -29,6 +29,7 @@ const s = StyleSheet.create({
   stat: { backgroundColor: '#f3f4f6', borderRadius: 4, padding: '4 8', alignItems: 'center' },
   statValue: { fontSize: 13, fontWeight: 700, color: '#111827' },
   statLabel: { fontSize: 8, color: '#9ca3af' },
+  description: { fontSize: 9, color: '#6b7280', marginTop: 3 },
   notes: { fontSize: 9, color: '#374151', backgroundColor: '#fefce8', padding: '4 8', borderRadius: 4, marginTop: 4 },
   videoLink: { fontSize: 9, color: '#2563eb', marginTop: 3 },
   footer: { position: 'absolute', bottom: 24, left: 40, right: 40, textAlign: 'center', fontSize: 8, color: '#d1d5db' },
@@ -70,6 +71,7 @@ export function PlanPdfDocument({ plan, clientName, locale = 'pl' }: { plan: Pla
                     </View>
                   ) : null}
                 </View>
+                {ex.exercise.description && <Text style={s.description}>{exDesc(ex.exercise, locale)}</Text>}
                 {ex.notes && <Text style={s.notes}>» {ex.notes}</Text>}
                 {ex.exercise.youtube_url && (
                   <Link src={ex.exercise.youtube_url} style={s.videoLink}>

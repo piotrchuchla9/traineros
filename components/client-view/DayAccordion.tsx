@@ -91,14 +91,14 @@ export function DayAccordion({ day, index }: { day: PlanDayWithExercises; index:
                   )}
                 </div>
 
+                {ex.exercise.description && (
+                  <p className="text-sm text-muted-foreground mt-2 italic">{exDesc(ex.exercise, locale)}</p>
+                )}
+
                 {ex.notes && (
                   <p className="text-sm text-foreground mt-2 bg-card rounded-lg px-3 py-2 border border-border">
                     💡 {ex.notes}
                   </p>
-                )}
-
-                {ex.exercise.description && !ex.notes && (
-                  <p className="text-sm text-muted-foreground mt-2 italic">{exDesc(ex.exercise, locale)}</p>
                 )}
               </div>
             )
