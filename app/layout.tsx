@@ -10,6 +10,9 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'TrainerOS — platforma dla trenerów personalnych',
   description: 'Twórz i udostępniaj plany treningowe swoim klientom bez zakładania konta.',
+  icons: {
+    icon: '/favicon.svg',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
