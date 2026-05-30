@@ -4,6 +4,7 @@ import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { SettingsClient } from './SettingsClient'
+import { ContactCard } from './ContactCard'
 import { getServerT } from '@/lib/i18n/server'
 
 function trialDaysLeft(endsAt: string | null): number {
@@ -64,6 +65,8 @@ export default async function SettingsPage() {
             <SettingsClient trainer={trainer} />
           </CardContent>
         </Card>
+
+        <ContactCard />
       </div>
     </AppLayout>
   )
