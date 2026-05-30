@@ -83,7 +83,7 @@ export default async function LandingPage() {
               </Card>
             </div>
             <div className="relative pt-4">
-              <Badge className="absolute top-0 left-1/2 -translate-x-1/2 z-10 whitespace-nowrap">{l.mostPopular}</Badge>
+              <Badge className="absolute top-2 left-1/2 -translate-x-1/2 z-10 whitespace-nowrap">{l.mostPopular}</Badge>
               <Card className="border-primary border-2 h-full">
                 <CardHeader>
                   <CardTitle>Basic</CardTitle>
