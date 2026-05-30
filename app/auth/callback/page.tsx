@@ -20,7 +20,7 @@ function CallbackHandler() {
     const supabase = createClient()
     supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
       if (error) {
-        router.replace('/login?error=auth')
+        router.replace(`/login?error=auth&msg=${encodeURIComponent(error.message)}`)
         return
       }
       fetch('/api/auth/post-signup', { method: 'POST' }).finally(() => {
