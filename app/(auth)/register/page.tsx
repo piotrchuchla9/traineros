@@ -7,13 +7,14 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { createClient } from '@/lib/supabase/client'
-import { useT } from '@/lib/i18n/context'
+import { useT, useLang } from '@/lib/i18n/context'
 import { ThemeSwitcher } from '@/components/shared/ThemeSwitcher'
 import { LangSwitcher } from '@/components/shared/LangSwitcher'
 import { toast } from 'sonner'
 
 export default function RegisterPage() {
   const t = useT()
+  const { locale } = useLang()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -50,7 +51,7 @@ export default function RegisterPage() {
       email,
       password,
       options: {
-        data: { name, promo_code: code || null },
+        data: { name, promo_code: code || null, locale },
         emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     })
