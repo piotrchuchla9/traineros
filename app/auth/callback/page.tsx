@@ -10,7 +10,7 @@ function CallbackHandler() {
 
   useEffect(() => {
     const tokenHash = searchParams.get('token_hash')
-    const type = searchParams.get('type') as 'signup' | 'recovery' | null
+    const type = searchParams.get('type') as 'email' | 'signup' | 'recovery' | null
     const next = searchParams.get('next') ?? '/dashboard'
 
     if (!tokenHash || !type) {
