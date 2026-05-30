@@ -12,9 +12,12 @@ export default async function LandingPage() {
   const l = t.landing
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
+        <div className="absolute left-1/2 top-0 -translate-x-1/2 w-[800px] h-[500px] rounded-full bg-primary/10 blur-[120px] opacity-60" />
+      </div>
       {/* Nav */}
-      <nav className="border-b border-border px-6 py-4 flex items-center justify-between max-w-6xl mx-auto">
+      <nav className="relative z-10 border-b border-border px-6 py-4 flex items-center justify-between max-w-6xl mx-auto">
         <span className="text-xl font-bold text-foreground">TrainerOS</span>
         <div className="flex items-center gap-2">
           <LangSwitcher />
@@ -29,7 +32,7 @@ export default async function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="max-w-4xl mx-auto px-6 py-24 text-center">
+      <section className="relative z-10 max-w-4xl mx-auto px-6 py-24 text-center">
         <Badge className="mb-6">{l.trialBadge}</Badge>
         <h1 className="text-5xl font-bold text-foreground leading-tight mb-6">
           {l.heroTitle}<br />
