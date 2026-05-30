@@ -9,16 +9,17 @@ function CallbackHandler() {
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    const code = searchParams.get('code')
+    const tokenHash = searchParams.get('token_hash')
+    const type = searchParams.get('type') as 'signup' | 'recovery' | null
     const next = searchParams.get('next') ?? '/dashboard'
 
-    if (!code) {
+    if (!tokenHash || !type) {
       router.replace('/login?error=auth')
       return
     }
 
     const supabase = createClient()
-    supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
+    supabase.auth.verifyOtp({ token_hash: tokenHash, type }).then(({ error }) => {
       if (error) {
         router.replace(`/login?error=auth&msg=${encodeURIComponent(error.message)}`)
         return
