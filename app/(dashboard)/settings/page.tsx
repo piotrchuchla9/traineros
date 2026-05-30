@@ -31,13 +31,12 @@ export default async function SettingsPage() {
         {/* Profile */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">{t.settings.name}</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-base">{t.settings.name}</CardTitle>
+              <span className="text-sm font-medium">{trainer.name}</span>
+            </div>
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">{t.settings.name}</span>
-              <span className="font-medium">{trainer.name}</span>
-            </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">{t.settings.email}</span>
               <span className="font-medium">{trainer.email}</span>
