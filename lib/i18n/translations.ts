@@ -273,7 +273,7 @@ const pl = {
     perMonth: 'miesięcznie',
     for14days: 'przez 14 dni',
     pricingCta: 'Zacznij trial za darmo',
-    footer: '© 2025 TrainerOS. Wszelkie prawa zastrzeżone.',
+    footer: 'Wszelkie prawa zastrzeżone.',
   },
   banner: {
     inactive: 'Subskrypcja nieaktywna. Odnów żeby odblokować dostęp.',
@@ -579,7 +579,7 @@ const en: typeof pl = {
     perMonth: 'per month',
     for14days: 'for 14 days',
     pricingCta: 'Start free trial',
-    footer: '© 2025 TrainerOS. All rights reserved.',
+    footer: 'All rights reserved.',
   },
   banner: {
     inactive: 'Subscription inactive. Renew to restore access.',

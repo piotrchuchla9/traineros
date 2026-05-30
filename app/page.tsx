@@ -116,8 +116,9 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      <footer className="border-t border-border py-8 px-6 text-center text-sm text-muted-foreground">
-        <p>{l.footer}</p>
+      <footer className="border-t border-border py-8 px-6 text-center text-sm text-muted-foreground space-y-1">
+        <p>© {new Date().getFullYear()} TrainerOS. {l.footer}</p>
+        <p><a href="mailto:contact@traineros.live" className="hover:text-foreground transition-colors">contact@traineros.live</a></p>
       </footer>
     </div>
   )
