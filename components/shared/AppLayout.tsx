@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { ThemeSwitcher } from './ThemeSwitcher'
 import { LangSwitcher } from './LangSwitcher'
+import { NavigationProgress } from './NavigationProgress'
 import { useT } from '@/lib/i18n/context'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
@@ -29,6 +30,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <NavigationProgress />
       <header className="bg-card border-b border-border sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-6">
@@ -61,7 +63,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </header>
-      <main className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-8">
+      <main
+        key={pathname}
+        className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 animate-in fade-in slide-in-from-bottom-2 duration-200"
+      >
         {children}
       </main>
     </div>
