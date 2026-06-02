@@ -13,6 +13,7 @@ import { createClient } from '@/lib/supabase/client'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { useT } from '@/lib/i18n/context'
+import { formatPhone, isValidPhone } from '@/lib/phone'
 
 export default function NewClientPage() {
   const router = useRouter()
@@ -28,6 +29,10 @@ export default function NewClientPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!form.name.trim()) return
+    if (form.phone && !isValidPhone(form.phone)) {
+      setError(t.newClient.phoneInvalid)
+      return
+    }
     setLoading(true)
     setError('')
 
@@ -100,7 +105,7 @@ export default function NewClientPage() {
               </div>
               <div className="space-y-1">
                 <Label htmlFor="phone">{t.newClient.phone}</Label>
-                <Input id="phone" type="tel" value={form.phone} onChange={e => update('phone', e.target.value)} placeholder={t.newClient.phonePlaceholder} />
+                <Input id="phone" type="tel" value={form.phone} onChange={e => update('phone', formatPhone(e.target.value))} placeholder={t.newClient.phonePlaceholder} />
               </div>
               <div className="space-y-1">
                 <Label htmlFor="goal">{t.newClient.goal}</Label>

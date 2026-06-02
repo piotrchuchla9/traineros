@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { AppLayout } from '@/components/shared/AppLayout'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { DeleteClientButton } from './DeleteClientButton'
+import { EditClientSheet } from './EditClientSheet'
 import { PlanCard } from './PlanCard'
 import { cn } from '@/lib/utils'
 import { getServerT } from '@/lib/i18n/server'
@@ -53,6 +54,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           <Link href={`/clients/${id}/plans/new`} className={cn(buttonVariants())}>
             {t.client.newPlan}
           </Link>
+          <EditClientSheet client={client} />
           <DeleteClientButton clientId={id} clientName={client.name} />
         </div>
       </div>

@@ -79,6 +79,17 @@ export function PlanCard({ plan, clientPhone }: { plan: Plan; clientPhone?: stri
             >
               {t.client.preview}
             </Link>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={e => {
+                e.stopPropagation()
+                navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_BASE_URL}/plan/${plan.share_token}`)
+                toast.success(t.planEditor.copyLink)
+              }}
+            >
+              {t.planEditor.copyLink}
+            </Button>
             <PlanPdfButton
               planId={plan.id}
               planName={plan.name}
