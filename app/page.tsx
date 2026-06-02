@@ -12,9 +12,11 @@ export default async function LandingPage() {
   const l = t.landing
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
+    <div className="min-h-screen bg-background app-bg relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
-        <div className="absolute left-1/2 top-0 -translate-x-1/2 w-[800px] h-[500px] rounded-full bg-primary/10 blur-[120px] opacity-60" />
+        <div className="absolute left-1/2 top-[-15%] -translate-x-1/2 w-[900px] h-[600px] rounded-full bg-blue-300/40 dark:bg-blue-500/20 blur-[130px]" />
+        <div className="absolute right-[-8%] top-1/4 w-[500px] h-[500px] rounded-full bg-violet-300/25 dark:bg-violet-500/15 blur-[110px]" />
+        <div className="absolute left-[-5%] bottom-1/4 w-[420px] h-[420px] rounded-full bg-indigo-200/30 dark:bg-indigo-500/15 blur-[120px]" />
       </div>
       {/* Nav */}
       <nav className="relative z-10 border-b border-border px-6 py-4 flex items-center justify-between max-w-6xl mx-auto">

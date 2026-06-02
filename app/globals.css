@@ -129,6 +129,20 @@
   }
 }
 
+/* Ambient background glow — applied on page wrappers */
+.app-bg {
+  background-image:
+    radial-gradient(ellipse 70% 45% at 50% -10%, oklch(0.84 0.10 240 / 0.45), transparent),
+    radial-gradient(ellipse 50% 35% at 92% 100%, oklch(0.80 0.08 280 / 0.28), transparent);
+}
+
+.dark .app-bg {
+  background-image:
+    radial-gradient(ellipse 70% 40% at 50% -10%, oklch(0.48 0.14 250 / 0.45), transparent),
+    radial-gradient(ellipse 45% 30% at 88% 100%, oklch(0.42 0.12 270 / 0.28), transparent),
+    radial-gradient(ellipse 30% 25% at 6% 65%, oklch(0.38 0.10 240 / 0.18), transparent);
+}
+
 @media print {
   body {
     background: white !important;
