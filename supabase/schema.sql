@@ -73,6 +73,18 @@ CREATE TABLE IF NOT EXISTS public.plan_exercises (
   exercise_order  integer NOT NULL
 );
 
+-- Kody promocyjne
+CREATE TABLE IF NOT EXISTS public.promo_codes (
+  id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  code        text NOT NULL UNIQUE,
+  trial_days  integer NOT NULL DEFAULT 90,
+  uses        integer NOT NULL DEFAULT 0,
+  max_uses    integer NOT NULL DEFAULT 100,
+  active      boolean NOT NULL DEFAULT true,
+  description text,
+  created_at  timestamptz NOT NULL DEFAULT now()
+);
+
 -- ============================================================
 -- Row Level Security
 -- ============================================================
@@ -83,6 +95,8 @@ ALTER TABLE public.exercises    ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.plans        ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.plan_days    ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.plan_exercises ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.promo_codes  ENABLE ROW LEVEL SECURITY;
+-- promo_codes: brak policies — dostępne tylko przez service role (API)
 
 -- trainers
 CREATE POLICY trainer_self ON public.trainers

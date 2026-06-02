@@ -176,6 +176,35 @@ export interface Database {
           }
         ]
       }
+      promo_codes: {
+        Row: {
+          id: string
+          code: string
+          trial_days: number
+          uses: number
+          max_uses: number
+          active: boolean
+          description: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          code: string
+          trial_days?: number
+          uses?: number
+          max_uses?: number
+          active?: boolean
+          description?: string | null
+        }
+        Update: {
+          active?: boolean
+          uses?: number
+          max_uses?: number
+          trial_days?: number
+          description?: string | null
+        }
+        Relationships: []
+      }
       plan_exercises: {
         Row: {
           id: string
@@ -242,6 +271,8 @@ export type PlanExercise = PlanExerciseRow & { exercise: Exercise; day_id: strin
 export type PlanDayWithExercises = PlanDay & { exercises: PlanExercise[] }
 
 export type PlanState = Plan & { days: PlanDayWithExercises[] }
+
+export type PromoCode = Database['public']['Tables']['promo_codes']['Row']
 
 export type MuscleGroup = 'chest' | 'back' | 'legs' | 'shoulders' | 'arms' | 'core' | 'cardio'
 
