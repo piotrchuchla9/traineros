@@ -101,7 +101,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       ) : (
         <div className="space-y-3">
           {plans.map(plan => (
-            <PlanCard key={plan.id} plan={plan} />
+            <PlanCard key={plan.id} plan={plan} clientPhone={client.phone} />
           ))}
         </div>
       )}

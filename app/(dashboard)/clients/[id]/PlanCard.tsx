@@ -21,7 +21,7 @@ type Plan = {
   share_token: string
 }
 
-export function PlanCard({ plan }: { plan: Plan }) {
+export function PlanCard({ plan, clientPhone }: { plan: Plan; clientPhone?: string | null }) {
   const t = useT()
   const router = useRouter()
   const [active, setActive] = useState(plan.active)
@@ -86,6 +86,17 @@ export function PlanCard({ plan }: { plan: Plan }) {
             >
               PDF
             </PlanPdfButton>
+            {clientPhone && (
+              <a
+                href={`https://wa.me/${clientPhone.replace(/\D/g, '')}?text=${encodeURIComponent(`${t.plan.whatsappMsg(plan.name)}${process.env.NEXT_PUBLIC_BASE_URL}/plan/${plan.share_token}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={e => e.stopPropagation()}
+                className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'text-green-600 hover:text-green-700 border-green-200 hover:border-green-300 hover:bg-green-50 dark:text-green-400 dark:border-green-900 dark:hover:bg-green-950')}
+              >
+                {t.plan.whatsapp}
+              </a>
+            )}
             <button
               onClick={e => { e.stopPropagation(); setConfirmOpen(true) }}
               className="text-muted-foreground/40 hover:text-destructive text-sm transition-colors"

@@ -136,6 +136,8 @@ const pl = {
     deleteErr: 'Nie udało się usunąć planu',
     activated: 'Plan aktywowany',
     archived: 'Plan zarchiwizowany',
+    whatsapp: 'WhatsApp',
+    whatsappMsg: (name: string) => `Cześć! Oto Twój plan treningowy "${name}": `,
   },
   newPlan: {
     back: '← Powrót',
@@ -442,6 +444,8 @@ const en: typeof pl = {
     deleteErr: 'Failed to delete plan',
     activated: 'Plan activated',
     archived: 'Plan archived',
+    whatsapp: 'WhatsApp',
+    whatsappMsg: (name: string) => `Hi! Here's your training plan "${name}": `,
   },
   newPlan: {
     back: '← Back',
