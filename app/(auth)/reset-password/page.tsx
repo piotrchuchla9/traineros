@@ -35,7 +35,12 @@ export default function ResetPasswordPage() {
       return
     }
     toast.success(rp.success)
-    router.push('/dashboard')
+    const { data: clientRow } = await supabase
+      .from('clients')
+      .select('id')
+      .eq('auth_user_id', (await supabase.auth.getUser()).data.user?.id ?? '')
+      .maybeSingle()
+    router.push(clientRow ? '/client' : '/dashboard')
   }
 
   return (

@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { AvatarPicker } from '@/components/shared/AvatarPicker'
 import { createClient } from '@/lib/supabase/client'
 import { toast } from 'sonner'
 import { useT } from '@/lib/i18n/context'
@@ -19,6 +20,8 @@ type ClientData = {
   phone: string | null
   goal: string | null
   notes: string | null
+  avatar_url: string | null
+  avatarSignedUrl?: string | null
 }
 
 export function EditClientSheet({ client }: { client: ClientData }) {
@@ -34,9 +37,24 @@ export function EditClientSheet({ client }: { client: ClientData }) {
     goal: client.goal ?? '',
     notes: client.notes ?? '',
   })
+  const [avatarFile, setAvatarFile] = useState<File | null>(null)
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(client.avatarSignedUrl ?? null)
+  const [removeAvatar, setRemoveAvatar] = useState(false)
 
   function update(key: string, value: string) {
     setForm(prev => ({ ...prev, [key]: value }))
+  }
+
+  function handleAvatarSelect(file: File) {
+    setAvatarFile(file)
+    setAvatarPreview(URL.createObjectURL(file))
+    setRemoveAvatar(false)
+  }
+
+  function handleAvatarRemove() {
+    setAvatarFile(null)
+    setAvatarPreview(null)
+    setRemoveAvatar(true)
   }
 
   async function handleSave(e: React.FormEvent) {
@@ -49,16 +67,37 @@ export function EditClientSheet({ client }: { client: ClientData }) {
     setPhoneError('')
     setSaving(true)
     const supabase = createClient()
-    const { error } = await supabase
-      .from('clients')
-      .update({
-        name: form.name.trim(),
-        email: form.email.trim() || null,
-        phone: form.phone.trim() || null,
-        goal: form.goal.trim() || null,
-        notes: form.notes.trim() || null,
-      })
-      .eq('id', client.id)
+    const { data: { user } } = await supabase.auth.getUser()
+
+    let newAvatarUrl: string | null | undefined = undefined
+
+    if (removeAvatar && !avatarFile) {
+      if (client.avatar_url) {
+        await supabase.storage.from('client-avatars').remove([client.avatar_url])
+      }
+      newAvatarUrl = null
+    }
+
+    if (avatarFile && user) {
+      const ext = avatarFile.name.split('.').pop() ?? 'jpg'
+      const path = `${user.id}/${client.id}/avatar.${ext}`
+      if (client.avatar_url && client.avatar_url !== path) {
+        await supabase.storage.from('client-avatars').remove([client.avatar_url])
+      }
+      const { error: uploadErr } = await supabase.storage
+        .from('client-avatars')
+        .upload(path, avatarFile, { upsert: true })
+      if (!uploadErr) newAvatarUrl = path
+    }
+
+    const { error } = await supabase.from('clients').update({
+      name: form.name.trim(),
+      email: form.email.trim() || null,
+      phone: form.phone.trim() || null,
+      goal: form.goal.trim() || null,
+      notes: form.notes.trim() || null,
+      ...(newAvatarUrl !== undefined ? { avatar_url: newAvatarUrl } : {}),
+    }).eq('id', client.id)
 
     setSaving(false)
     if (error) {
@@ -72,14 +111,22 @@ export function EditClientSheet({ client }: { client: ClientData }) {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <Button variant="outline">{t.client.editBtn}</Button>
+      <SheetTrigger render={<Button variant="outline" />}>
+        {t.client.editBtn}
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="overflow-y-auto">
         <SheetHeader>
           <SheetTitle>{t.client.editTitle}</SheetTitle>
         </SheetHeader>
         <form onSubmit={handleSave} className="mt-6 space-y-4 px-4 pb-4">
+          <div className="flex justify-center pb-2">
+            <AvatarPicker
+              name={form.name}
+              previewUrl={avatarPreview}
+              onFileSelect={handleAvatarSelect}
+              onRemove={handleAvatarRemove}
+            />
+          </div>
           <div className="space-y-1">
             <Label htmlFor="edit-name">{t.newClient.name}</Label>
             <Input id="edit-name" value={form.name} onChange={e => update('name', e.target.value)} required />

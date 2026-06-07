@@ -45,6 +45,8 @@ export interface Database {
           goal: string | null
           notes: string | null
           active: boolean
+          avatar_url: string | null
+          auth_user_id: string | null
           created_at: string
         }
         Insert: {
@@ -56,6 +58,8 @@ export interface Database {
           goal?: string | null
           notes?: string | null
           active?: boolean
+          avatar_url?: string | null
+          auth_user_id?: string | null
         }
         Update: {
           name?: string
@@ -64,6 +68,8 @@ export interface Database {
           goal?: string | null
           notes?: string | null
           active?: boolean
+          avatar_url?: string | null
+          auth_user_id?: string | null
         }
         Relationships: [
           {
@@ -251,6 +257,138 @@ export interface Database {
           }
         ]
       }
+      progress_entries: {
+        Row: {
+          id: string
+          client_id: string
+          trainer_id: string
+          date: string
+          weight_kg: number | null
+          measurements: Json | null
+          notes: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          client_id: string
+          trainer_id: string
+          date: string
+          weight_kg?: number | null
+          measurements?: Json | null
+          notes?: string | null
+        }
+        Update: {
+          date?: string
+          weight_kg?: number | null
+          measurements?: Json | null
+          notes?: string | null
+        }
+        Relationships: []
+      }
+      progress_photos: {
+        Row: {
+          id: string
+          entry_id: string
+          storage_path: string
+          photo_order: number
+        }
+        Insert: {
+          id?: string
+          entry_id: string
+          storage_path: string
+          photo_order?: number
+        }
+        Update: {
+          photo_order?: number
+        }
+        Relationships: []
+      }
+      workout_logs: {
+        Row: {
+          id: string
+          client_id: string
+          trainer_id: string
+          plan_id: string | null
+          plan_name: string | null
+          day_name: string | null
+          date: string
+          notes: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          client_id: string
+          trainer_id: string
+          plan_id?: string | null
+          plan_name?: string | null
+          day_name?: string | null
+          date: string
+          notes?: string | null
+        }
+        Update: {
+          date?: string
+          notes?: string | null
+        }
+        Relationships: []
+      }
+      trainer_locations: {
+        Row: { id: string; trainer_id: string; name: string; created_at: string }
+        Insert: { id?: string; trainer_id: string; name: string }
+        Update: { name?: string }
+        Relationships: []
+      }
+      training_sessions: {
+        Row: {
+          id: string; trainer_id: string; client_id: string
+          date: string; time: string | null; duration_minutes: number
+          location_id: string | null; location_name: string | null
+          notes: string | null; post_notes: string | null
+          paid: boolean; created_at: string
+        }
+        Insert: {
+          id?: string; trainer_id: string; client_id: string
+          date: string; time?: string | null; duration_minutes?: number
+          location_id?: string | null; location_name?: string | null
+          notes?: string | null; post_notes?: string | null; paid?: boolean
+        }
+        Update: {
+          date?: string; time?: string | null; duration_minutes?: number
+          location_id?: string | null; location_name?: string | null
+          notes?: string | null; post_notes?: string | null; paid?: boolean
+          client_id?: string
+        }
+        Relationships: []
+      }
+      workout_log_exercises: {
+        Row: {
+          id: string
+          log_id: string
+          exercise_name: string
+          planned_sets: number | null
+          planned_reps: string | null
+          actual_weight: string | null
+          actual_reps: string | null
+          notes: string | null
+          exercise_order: number
+        }
+        Insert: {
+          id?: string
+          log_id: string
+          exercise_name: string
+          planned_sets?: number | null
+          planned_reps?: string | null
+          actual_weight?: string | null
+          actual_reps?: string | null
+          notes?: string | null
+          exercise_order?: number
+        }
+        Update: {
+          actual_weight?: string | null
+          actual_reps?: string | null
+          notes?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: Record<string, never>
     Functions: Record<string, never>
@@ -273,6 +411,85 @@ export type PlanDayWithExercises = PlanDay & { exercises: PlanExercise[] }
 export type PlanState = Plan & { days: PlanDayWithExercises[] }
 
 export type PromoCode = Database['public']['Tables']['promo_codes']['Row']
+
+export interface TrainerLocation {
+  id: string
+  trainer_id: string
+  name: string
+  created_at: string
+}
+
+export interface TrainingSession {
+  id: string
+  trainer_id: string
+  client_id: string
+  date: string
+  time: string | null
+  duration_minutes: number
+  location_id: string | null
+  location_name: string | null
+  notes: string | null
+  post_notes: string | null
+  paid: boolean
+  created_at: string
+  client?: { id: string; name: string }
+  location?: TrainerLocation | null
+}
+
+export interface BodyMeasurements {
+  chest?: number | null
+  waist?: number | null
+  hips?: number | null
+  bicep?: number | null
+  thigh?: number | null
+  calf?: number | null
+  [key: string]: number | null | undefined
+}
+
+export interface ProgressEntry {
+  id: string
+  client_id: string
+  trainer_id: string
+  date: string
+  weight_kg: number | null
+  measurements: BodyMeasurements | null
+  notes: string | null
+  created_at: string
+  photos: ProgressPhoto[]
+}
+
+export interface ProgressPhoto {
+  id: string
+  entry_id: string
+  storage_path: string
+  photo_order: number
+  url?: string
+}
+
+export interface WorkoutLog {
+  id: string
+  client_id: string
+  trainer_id: string
+  plan_id: string | null
+  plan_name: string | null
+  day_name: string | null
+  date: string
+  notes: string | null
+  created_at: string
+  exercises: WorkoutLogExercise[]
+}
+
+export interface WorkoutLogExercise {
+  id: string
+  log_id: string
+  exercise_name: string
+  planned_sets: number | null
+  planned_reps: string | null
+  actual_weight: string | null
+  actual_reps: string | null
+  notes: string | null
+  exercise_order: number
+}
 
 export type MuscleGroup = 'chest' | 'back' | 'legs' | 'shoulders' | 'arms' | 'core' | 'cardio'
 

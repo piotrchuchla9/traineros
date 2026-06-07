@@ -73,6 +73,51 @@ CREATE TABLE IF NOT EXISTS public.plan_exercises (
   exercise_order  integer NOT NULL
 );
 
+-- Wpisy progresowe klienta
+CREATE TABLE IF NOT EXISTS public.progress_entries (
+  id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  client_id   uuid NOT NULL REFERENCES public.clients(id) ON DELETE CASCADE,
+  trainer_id  uuid NOT NULL REFERENCES public.trainers(id) ON DELETE CASCADE,
+  date        date NOT NULL,
+  weight_kg   numeric(5,2),
+  notes       text,
+  created_at  timestamptz NOT NULL DEFAULT now()
+);
+
+-- Zdjęcia przypisane do wpisu
+CREATE TABLE IF NOT EXISTS public.progress_photos (
+  id           uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  entry_id     uuid NOT NULL REFERENCES public.progress_entries(id) ON DELETE CASCADE,
+  storage_path text NOT NULL,
+  photo_order  integer NOT NULL DEFAULT 0
+);
+
+-- Logi treningów
+CREATE TABLE IF NOT EXISTS public.workout_logs (
+  id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  client_id   uuid NOT NULL REFERENCES public.clients(id) ON DELETE CASCADE,
+  trainer_id  uuid NOT NULL REFERENCES public.trainers(id) ON DELETE CASCADE,
+  plan_id     uuid REFERENCES public.plans(id) ON DELETE SET NULL,
+  plan_name   text,
+  day_name    text,
+  date        date NOT NULL,
+  notes       text,
+  created_at  timestamptz NOT NULL DEFAULT now()
+);
+
+-- Wyniki ćwiczeń w logu
+CREATE TABLE IF NOT EXISTS public.workout_log_exercises (
+  id               uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  log_id           uuid NOT NULL REFERENCES public.workout_logs(id) ON DELETE CASCADE,
+  exercise_name    text NOT NULL,
+  planned_sets     integer,
+  planned_reps     text,
+  actual_weight    text,
+  actual_reps      text,
+  notes            text,
+  exercise_order   integer NOT NULL DEFAULT 0
+);
+
 -- Kody promocyjne
 CREATE TABLE IF NOT EXISTS public.promo_codes (
   id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),

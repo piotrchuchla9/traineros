@@ -69,6 +69,22 @@ export default async function LandingPage() {
         </div>
       </section>
 
+      {/* Features grid */}
+      <section className="py-20 px-6">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-foreground text-center mb-12">{l.featuresTitle}</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {l.features.map(({ icon, title, desc }) => (
+              <div key={title} className="rounded-xl border border-border bg-card p-5 space-y-2">
+                <div className="text-2xl">{icon}</div>
+                <h3 className="font-semibold text-foreground">{title}</h3>
+                <p className="text-sm text-muted-foreground">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Pricing */}
       <section id="cennik" className="py-20 px-6">
         <div className="max-w-4xl mx-auto text-center">

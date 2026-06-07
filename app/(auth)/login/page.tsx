@@ -26,7 +26,7 @@ export default function LoginPage() {
     setLoading(true)
 
     const supabase = createClient()
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { data: signInData, error } = await supabase.auth.signInWithPassword({ email, password })
 
     if (error) {
       setError(t.auth.login.error)
@@ -34,7 +34,15 @@ export default function LoginPage() {
       return
     }
 
-    router.push('/dashboard')
+    const uid = signInData.user?.id
+    // Client check takes priority — clients may also have a spurious trainer row
+    const { data: clientRow } = await supabase
+      .from('clients')
+      .select('id')
+      .eq('auth_user_id', uid)
+      .maybeSingle()
+
+    router.push(clientRow ? '/client' : '/dashboard')
     router.refresh()
   }
 

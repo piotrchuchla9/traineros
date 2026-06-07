@@ -17,6 +17,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
   const NAV_ITEMS = [
     { href: '/dashboard', label: t.nav.clients },
+    { href: '/schedule', label: t.schedule.title },
     { href: '/exercises', label: t.nav.exercises },
     { href: '/settings', label: t.nav.settings },
   ]

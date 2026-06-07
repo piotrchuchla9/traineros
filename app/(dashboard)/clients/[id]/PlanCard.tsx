@@ -12,6 +12,7 @@ import { useT } from '@/lib/i18n/context'
 import { createClient } from '@/lib/supabase/client'
 import { toast } from 'sonner'
 import { PlanPdfButton } from '@/components/client-view/PlanPdfButton'
+import { CopyPlanDialog } from '@/components/plan/CopyPlanDialog'
 
 type Plan = {
   id: string
@@ -21,11 +22,12 @@ type Plan = {
   share_token: string
 }
 
-export function PlanCard({ plan, clientPhone }: { plan: Plan; clientPhone?: string | null }) {
+export function PlanCard({ plan, clientPhone, clientId }: { plan: Plan; clientPhone?: string | null; clientId: string }) {
   const t = useT()
   const router = useRouter()
   const [active, setActive] = useState(plan.active)
   const [confirmOpen, setConfirmOpen] = useState(false)
+  const [copyOpen, setCopyOpen] = useState(false)
   const [deleting, setDeleting] = useState(false)
 
   async function toggleActive(e: React.MouseEvent) {
@@ -108,6 +110,13 @@ export function PlanCard({ plan, clientPhone }: { plan: Plan; clientPhone?: stri
                 {t.plan.whatsapp}
               </a>
             )}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={e => { e.stopPropagation(); setCopyOpen(true) }}
+            >
+              {t.plan.copyTo}
+            </Button>
             <button
               onClick={e => { e.stopPropagation(); setConfirmOpen(true) }}
               className="text-muted-foreground/40 hover:text-destructive text-sm transition-colors"
@@ -117,6 +126,8 @@ export function PlanCard({ plan, clientPhone }: { plan: Plan; clientPhone?: stri
           </div>
         </CardContent>
       </Card>
+
+      <CopyPlanDialog open={copyOpen} onClose={() => setCopyOpen(false)} planId={plan.id} currentClientId={clientId} />
 
       <Dialog open={confirmOpen} onOpenChange={v => { if (!v) setConfirmOpen(false) }}>
         <DialogContent>

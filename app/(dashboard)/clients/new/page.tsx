@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { buttonVariants } from '@/components/ui/button'
+import { AvatarPicker } from '@/components/shared/AvatarPicker'
 import { createClient } from '@/lib/supabase/client'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
@@ -21,9 +22,21 @@ export default function NewClientPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [form, setForm] = useState({ name: '', email: '', phone: '', goal: '', notes: '' })
+  const [avatarFile, setAvatarFile] = useState<File | null>(null)
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
 
   function update(key: string, value: string) {
     setForm(prev => ({ ...prev, [key]: value }))
+  }
+
+  function handleAvatarSelect(file: File) {
+    setAvatarFile(file)
+    setAvatarPreview(URL.createObjectURL(file))
+  }
+
+  function handleAvatarRemove() {
+    setAvatarFile(null)
+    setAvatarPreview(null)
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -75,6 +88,17 @@ export default function NewClientPage() {
       return
     }
 
+    if (avatarFile) {
+      const ext = avatarFile.name.split('.').pop() ?? 'jpg'
+      const path = `${user.id}/${data.id}/avatar.${ext}`
+      const { error: uploadErr } = await supabase.storage
+        .from('client-avatars')
+        .upload(path, avatarFile, { upsert: true })
+      if (!uploadErr) {
+        await supabase.from('clients').update({ avatar_url: path }).eq('id', data.id)
+      }
+    }
+
     toast.success(t.newClient.toastOk)
     router.push(`/clients/${data.id}`)
   }
@@ -95,6 +119,14 @@ export default function NewClientPage() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="flex justify-center pb-2">
+                <AvatarPicker
+                  name={form.name}
+                  previewUrl={avatarPreview}
+                  onFileSelect={handleAvatarSelect}
+                  onRemove={handleAvatarRemove}
+                />
+              </div>
               <div className="space-y-1">
                 <Label htmlFor="name">{t.newClient.name}</Label>
                 <Input id="name" value={form.name} onChange={e => update('name', e.target.value)} placeholder={t.newClient.namePlaceholder} required />
