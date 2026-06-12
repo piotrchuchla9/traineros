@@ -69,6 +69,7 @@ const pl = {
     },
   },
   dashboard: {
+    pageTitle: 'Dashboard',
     title: 'Klienci',
     active: (n: number) => `${n} aktywnych`,
     addClient: '+ Dodaj klienta',
@@ -574,6 +575,7 @@ const en: typeof pl = {
     },
   },
   dashboard: {
+    pageTitle: 'Dashboard',
     title: 'Clients',
     active: (n: number) => `${n} active`,
     addClient: '+ Add client',

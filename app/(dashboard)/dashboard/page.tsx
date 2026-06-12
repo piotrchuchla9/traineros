@@ -76,10 +76,7 @@ export default async function DashboardPage() {
   return (
     <AppLayout>
       <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">{t.dashboard.title}</h1>
-          <p className="text-sm text-muted-foreground mt-1">{t.dashboard.active(activeCount)}</p>
-        </div>
+        <h1 className="text-2xl font-bold text-foreground">{t.dashboard.pageTitle}</h1>
         {canAddClient ? (
           <Link href="/clients/new" className={cn(buttonVariants())}>
             {t.dashboard.addClient}
@@ -145,6 +142,11 @@ export default async function DashboardPage() {
       </div>
 
       {/* Clients list */}
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-lg font-semibold text-foreground">{t.dashboard.title}</h2>
+        <p className="text-sm text-muted-foreground">{t.dashboard.active(activeCount)}</p>
+      </div>
+
       {allClients.length === 0 ? (
         <Card className="border-dashed">
           <CardContent className="py-12 text-center">
