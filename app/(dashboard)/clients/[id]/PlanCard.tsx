@@ -119,7 +119,7 @@ export function PlanCard({ plan, clientPhone, clientId }: { plan: Plan; clientPh
             </Button>
             <button
               onClick={e => { e.stopPropagation(); setConfirmOpen(true) }}
-              className="text-muted-foreground/40 hover:text-destructive text-sm transition-colors"
+              className="cursor-pointer text-muted-foreground/40 hover:text-destructive text-sm transition-colors"
             >
               {t.plan.deleteBtn}
             </button>

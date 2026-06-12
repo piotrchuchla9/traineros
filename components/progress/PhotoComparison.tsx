@@ -70,7 +70,7 @@ export function PhotoComparison({ entries, onClose }: Props) {
                 key={p.id}
                 type="button"
                 onClick={() => onSelect(i)}
-                className={`w-9 h-9 rounded overflow-hidden border-2 transition-colors ${i === selectedIdx ? 'border-primary' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                className={`cursor-pointer w-9 h-9 rounded overflow-hidden border-2 transition-colors ${i === selectedIdx ? 'border-primary' : 'border-transparent opacity-60 hover:opacity-100'}`}
               >
                 <img src={p.url} alt="" className="w-full h-full object-cover" />
               </button>

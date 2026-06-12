@@ -130,7 +130,7 @@ export function ExercisePicker({
                 <button
                   key={ex.id}
                   onClick={() => { onSelect(ex); onClose() }}
-                  className="w-full text-left px-3 py-2.5 rounded-md hover:bg-accent transition-colors flex items-center justify-between group"
+                  className="cursor-pointer w-full text-left px-3 py-2.5 rounded-md hover:bg-accent transition-colors flex items-center justify-between group"
                 >
                   <span className="font-medium text-foreground text-sm">{exName(ex, locale)}</span>
                   <Badge variant="secondary" className="text-xs">{muscleLabel(ex.muscle_group)}</Badge>

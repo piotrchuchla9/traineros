@@ -220,7 +220,7 @@ export function AddProgressEntrySheet({ clientId, trainerId }: Props) {
           <button
             type="button"
             onClick={addCustomMeas}
-            className="text-xs text-muted-foreground hover:text-foreground underline"
+            className="cursor-pointer text-xs text-muted-foreground hover:text-foreground underline"
           >
             {t.progress.addMeasurement}
           </button>

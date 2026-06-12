@@ -253,7 +253,7 @@ export function SessionSheet({ open, onClose, onSaved, onDeleted, session, clien
                   role="switch"
                   aria-checked={isOnline}
                   onClick={() => setIsOnline(v => !v)}
-                  className="flex items-center gap-2 text-sm text-foreground"
+                  className="cursor-pointer flex items-center gap-2 text-sm text-foreground"
                 >
                   <span className={`relative inline-flex h-5 w-9 shrink-0 rounded-full border-2 border-transparent transition-colors ${isOnline ? 'bg-primary' : 'bg-muted'}`}>
                     <span className={`inline-block h-4 w-4 rounded-full bg-background shadow transition-transform ${isOnline ? 'translate-x-4' : 'translate-x-0'}`} />

@@ -60,7 +60,7 @@ function SessionCard({ session, use12h, locale, atLabel, durationFn, paidOkLabel
         <button
           type="button"
           onClick={e => { e.stopPropagation(); onPaidToggle(session.id, !session.paid) }}
-          className={`shrink-0 text-xs font-medium px-2 py-0.5 rounded-full transition-colors ${
+          className={`cursor-pointer shrink-0 text-xs font-medium px-2 py-0.5 rounded-full transition-colors ${
             session.paid
               ? 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300'
               : 'bg-muted text-muted-foreground hover:bg-green-50 hover:text-green-700'
@@ -132,7 +132,7 @@ function SessionFilters({ filterClient, filterLocation, filterPaid, clients, loc
         </SelectContent>
       </Select>
       {hasFilter && (
-        <button type="button" onClick={onClear} className="text-xs text-muted-foreground hover:text-foreground underline">
+        <button type="button" onClick={onClear} className="cursor-pointer text-xs text-muted-foreground hover:text-foreground underline">
           {clearLabel}
         </button>
       )}
@@ -302,7 +302,7 @@ export function ScheduleClient({ initialSessions, initialAllSessions, clients, l
       <div className="flex gap-1 mb-5 border-b border-border">
         {(['calendar', 'list'] as const).map(v => (
           <button key={v} onClick={() => setTab(v)}
-            className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px ${tab === v ? 'border-primary text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
+            className={`cursor-pointer px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px ${tab === v ? 'border-primary text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
           >
             {v === 'calendar' ? t.schedule.calendar : t.schedule.list}
           </button>
@@ -313,19 +313,19 @@ export function ScheduleClient({ initialSessions, initialAllSessions, clients, l
         <div className="space-y-4">
           {/* Month nav */}
           <div className="flex items-center justify-between">
-            <button onClick={prevMonth} className="p-2 hover:bg-muted rounded-lg transition-colors text-foreground">←</button>
+            <button onClick={prevMonth} className="cursor-pointer p-2 hover:bg-muted rounded-lg transition-colors text-foreground">←</button>
             <div className="flex items-center gap-3">
               <h2 className="text-base font-semibold text-foreground">
                 {t.schedule.months[month]} {year}
               </h2>
               <button
                 onClick={goToday}
-                className="text-xs text-muted-foreground hover:text-foreground border border-border rounded px-2 py-0.5 transition-colors"
+                className="cursor-pointer text-xs text-muted-foreground hover:text-foreground border border-border rounded px-2 py-0.5 transition-colors"
               >
                 {t.schedule.today}
               </button>
             </div>
-            <button onClick={nextMonth} className="p-2 hover:bg-muted rounded-lg transition-colors text-foreground">→</button>
+            <button onClick={nextMonth} className="cursor-pointer p-2 hover:bg-muted rounded-lg transition-colors text-foreground">→</button>
           </div>
 
           <SessionFilters {...filterProps} />
@@ -368,7 +368,7 @@ export function ScheduleClient({ initialSessions, initialAllSessions, clients, l
             <div className="flex gap-1">
               {(['upcoming', 'past'] as const).map(v => (
                 <button key={v} onClick={() => setListSubTab(v)}
-                  className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${listSubTab === v ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-muted'}`}
+                  className={`cursor-pointer px-3 py-1.5 text-sm rounded-lg transition-colors ${listSubTab === v ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-muted'}`}
                 >
                   {v === 'upcoming' ? t.schedule.upcoming : t.schedule.past}
                 </button>

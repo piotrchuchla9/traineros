@@ -70,7 +70,7 @@ export function ClientSessionsList({ initialSessions, client, locations: initial
         <div className="flex gap-1">
           {(['upcoming', 'past'] as const).map(v => (
             <button key={v} onClick={() => setSubTab(v)}
-              className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${subTab === v ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-muted'}`}
+              className={`cursor-pointer px-3 py-1.5 text-sm rounded-lg transition-colors ${subTab === v ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-muted'}`}
             >
               {v === 'upcoming' ? t.schedule.upcoming : t.schedule.past}
             </button>
@@ -126,7 +126,7 @@ export function ClientSessionsList({ initialSessions, client, locations: initial
                   <button
                     type="button"
                     onClick={e => { e.stopPropagation(); handlePaidToggle(s.id, !s.paid) }}
-                    className={`shrink-0 text-xs font-medium px-2 py-0.5 rounded-full transition-colors ${
+                    className={`cursor-pointer shrink-0 text-xs font-medium px-2 py-0.5 rounded-full transition-colors ${
                       s.paid
                         ? 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300'
                         : 'bg-muted text-muted-foreground hover:bg-green-50 hover:text-green-700'

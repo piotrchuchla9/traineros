@@ -31,7 +31,7 @@ export function DayAccordion({ day, index }: { day: PlanDayWithExercises; index:
   return (
     <div className="border border-border rounded-xl overflow-hidden">
       <button
-        className="w-full flex items-center justify-between px-4 py-4 bg-card font-semibold text-left text-foreground"
+        className="cursor-pointer w-full flex items-center justify-between px-4 py-4 bg-card font-semibold text-left text-foreground"
         onClick={() => setOpen(o => !o)}
       >
         <span>{day.name}</span>
@@ -54,7 +54,7 @@ export function DayAccordion({ day, index }: { day: PlanDayWithExercises; index:
                   </div>
                   {ytId && (
                     <button
-                      className="text-sm text-blue-600 font-medium ml-4 flex-shrink-0 mt-1"
+                      className="cursor-pointer text-sm text-blue-600 font-medium ml-4 flex-shrink-0 mt-1"
                       onClick={() => setVideoId(v => v === ytId ? null : ytId)}
                     >
                       {videoId === ytId ? t.clientView.hideVideo : t.clientView.watchVideo}

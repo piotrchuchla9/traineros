@@ -16,7 +16,7 @@ export function LangSwitcher() {
     <button
       onClick={handleSwitch}
       title={locale === 'pl' ? 'Switch to English' : 'Przełącz na polski'}
-      className="flex items-center justify-center w-8 h-8 rounded-md text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+      className="cursor-pointer flex items-center justify-center w-8 h-8 rounded-md text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
     >
       {locale === 'pl' ? 'EN' : 'PL'}
     </button>

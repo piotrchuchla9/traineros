@@ -22,7 +22,7 @@ export function ThemeSwitcher() {
     <button
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
       title={isDark ? 'Przełącz na jasny' : 'Przełącz na ciemny'}
-      className="flex items-center justify-center w-8 h-8 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+      className="cursor-pointer flex items-center justify-center w-8 h-8 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
     >
       {isDark ? <SunIcon /> : <MoonIcon />}
     </button>

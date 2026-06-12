@@ -65,7 +65,7 @@ export function AvatarPicker({ name, previewUrl, onFileSelect, onRemove }: Props
         <button
           type="button"
           onClick={onRemove}
-          className="text-xs text-muted-foreground hover:text-destructive transition-colors"
+          className="cursor-pointer text-xs text-muted-foreground hover:text-destructive transition-colors"
         >
           {t.newClient.avatarRemove}
         </button>

@@ -44,7 +44,7 @@ export function CalendarView({ year, month, sessions, selectedDate, onSelectDate
               type="button"
               onClick={() => onSelectDate(ds)}
               className={`
-                relative bg-card min-h-[80px] p-1.5 text-left transition-colors hover:bg-accent
+                cursor-pointer relative bg-card min-h-[80px] p-1.5 text-left transition-colors hover:bg-accent
                 ${isSelected ? 'bg-primary/5 ring-1 ring-inset ring-primary' : ''}
                 ${!currentMonth ? 'opacity-40' : ''}
               `}
