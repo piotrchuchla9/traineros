@@ -10,9 +10,15 @@ import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { cn } from '@/lib/utils'
 
 export default async function LandingPage() {
-  const supabase = await createSupabaseServerClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (user) redirect('/dashboard')
+  let authenticated = false
+  try {
+    const supabase = await createSupabaseServerClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    authenticated = !!user
+  } catch {
+    // Show landing page on any auth error
+  }
+  if (authenticated) redirect('/dashboard')
 
   const t = await getServerT()
   const l = t.landing
