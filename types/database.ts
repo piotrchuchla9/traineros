@@ -431,6 +431,7 @@ export interface TrainingSession {
   notes: string | null
   post_notes: string | null
   paid: boolean
+  google_event_id?: string | null
   created_at: string
   client?: { id: string; name: string }
   location?: TrainerLocation | null

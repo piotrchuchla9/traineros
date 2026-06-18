@@ -167,6 +167,12 @@ export function SessionSheet({ open, onClose, onSaved, onDeleted, session, clien
       toast.success(session ? t.schedule.toastUpdated : t.schedule.toastAdded)
       onSaved(result, !session)
       onClose()
+      // fire-and-forget Google Calendar sync
+      fetch('/api/google/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session: result }),
+      }).catch(() => {})
     } else {
       toast.error(t.schedule.toastErr)
     }
@@ -176,6 +182,7 @@ export function SessionSheet({ open, onClose, onSaved, onDeleted, session, clien
     if (!session) return
     setDeleting(true)
     const supabase = createClient()
+    const googleEventId = session.google_event_id
     const { error } = await supabase.from('training_sessions').delete().eq('id', session.id)
     setDeleting(false)
     setConfirmDelete(false)
@@ -186,6 +193,14 @@ export function SessionSheet({ open, onClose, onSaved, onDeleted, session, clien
     toast.success(t.schedule.toastDeleted)
     onDeleted(session.id)
     onClose()
+    // fire-and-forget Google Calendar delete
+    if (googleEventId) {
+      fetch('/api/google/sync', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ googleEventId }),
+      }).catch(() => {})
+    }
   }
 
   const isEditing = !!session

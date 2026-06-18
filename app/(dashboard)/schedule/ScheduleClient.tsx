@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -149,9 +150,11 @@ interface Props {
   initialYear: number
   initialMonth: number
   restricted?: boolean
+  googleConnected?: boolean
+  gcalStatus?: string
 }
 
-export function ScheduleClient({ initialSessions, initialAllSessions, clients, locations: initialLocations, trainerId, initialYear, initialMonth, restricted = false }: Props) {
+export function ScheduleClient({ initialSessions, initialAllSessions, clients, locations: initialLocations, trainerId, initialYear, initialMonth, restricted = false, googleConnected: initialGoogleConnected = false, gcalStatus }: Props) {
   const t = useT()
   const [tab, setTab] = useState<'calendar' | 'list'>('calendar')
   const [year, setYear] = useState(initialYear)
@@ -170,6 +173,19 @@ export function ScheduleClient({ initialSessions, initialAllSessions, clients, l
   const [use12h, setUse12h] = useState(() =>
     typeof window !== 'undefined' ? localStorage.getItem('timeFormat') === '12h' : false
   )
+  const [googleConnected, setGoogleConnected] = useState(initialGoogleConnected)
+  const [syncing, setSyncing] = useState(false)
+
+  useEffect(() => {
+    if (!gcalStatus) return
+    if (gcalStatus === 'connected') {
+      toast.success(t.schedule.gcalConnected)
+      setGoogleConnected(true)
+    } else if (gcalStatus === 'error') {
+      toast.error(t.schedule.gcalConnectErr)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   async function loadMonth(y: number, m: number) {
     setLoading(true)
@@ -218,6 +234,25 @@ export function ScheduleClient({ initialSessions, initialAllSessions, clients, l
   function handleDeleted(id: string) {
     setSessions(prev => prev.filter(s => s.id !== id))
     setAllSessions(prev => prev.filter(s => s.id !== id))
+  }
+
+  async function handleSyncAll() {
+    setSyncing(true)
+    try {
+      const res = await fetch('/api/google/sync-all', { method: 'POST' })
+      const json = await res.json()
+      if (json.ok) toast.success(t.schedule.gcalSyncDone(json.synced))
+      else toast.error(t.schedule.gcalSyncErr)
+    } catch {
+      toast.error(t.schedule.gcalSyncErr)
+    }
+    setSyncing(false)
+  }
+
+  async function handleDisconnect() {
+    await fetch('/api/google/disconnect', { method: 'POST' })
+    setGoogleConnected(false)
+    toast.success(t.schedule.gcalDisconnected)
   }
 
   async function handlePaidToggle(id: string, paid: boolean) {
@@ -296,7 +331,26 @@ export function ScheduleClient({ initialSessions, initialAllSessions, clients, l
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-foreground">{t.schedule.title}</h1>
-        {!restricted && <Button onClick={() => { setEditSession(null); setSheetOpen(true) }}>{t.schedule.addSession}</Button>}
+        <div className="flex items-center gap-2">
+          {googleConnected ? (
+            <>
+              <Button variant="outline" size="sm" disabled={syncing} onClick={handleSyncAll}>
+                {syncing ? t.schedule.gcalSyncing : t.schedule.gcalSyncAll}
+              </Button>
+              <button
+                onClick={handleDisconnect}
+                className="cursor-pointer text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {t.schedule.gcalDisconnect}
+              </button>
+            </>
+          ) : (
+            <a href="/api/auth/google">
+              <Button variant="outline" size="sm">{t.schedule.gcalConnect}</Button>
+            </a>
+          )}
+          {!restricted && <Button onClick={() => { setEditSession(null); setSheetOpen(true) }}>{t.schedule.addSession}</Button>}
+        </div>
       </div>
 
       {/* Tabs */}
