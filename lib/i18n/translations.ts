@@ -312,6 +312,7 @@ const pl = {
     for14days: 'przez 14 dni',
     pricingCta: 'Zacznij trial za darmo',
     footer: 'Wszelkie prawa zastrzeżone.',
+    prices: { trial: '0 zł', basic: '59 zł', pro: '99 zł' },
   },
   banner: {
     inactive: 'Subskrypcja nieaktywna. Odnów żeby odblokować dostęp.',
@@ -818,6 +819,7 @@ const en: typeof pl = {
     for14days: 'for 14 days',
     pricingCta: 'Start free trial',
     footer: 'All rights reserved.',
+    prices: { trial: '$0', basic: '$15', pro: '$30' },
   },
   banner: {
     inactive: 'Subscription inactive. Renew to restore access.',

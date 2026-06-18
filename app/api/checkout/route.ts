@@ -7,10 +7,11 @@ export async function POST(req: Request) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { plan } = await req.json() as { plan: 'basic' | 'pro' }
+  const { plan, locale } = await req.json() as { plan: 'basic' | 'pro'; locale?: string }
+  const isUsd = locale === 'en'
   const priceId = plan === 'pro'
-    ? process.env.STRIPE_PRO_PRICE_ID!
-    : process.env.STRIPE_BASIC_PRICE_ID!
+    ? (isUsd ? process.env.STRIPE_PRO_PRICE_ID_USD! : process.env.STRIPE_PRO_PRICE_ID!)
+    : (isUsd ? process.env.STRIPE_BASIC_PRICE_ID_USD! : process.env.STRIPE_BASIC_PRICE_ID!)
 
   const { data: trainer } = await supabase.from('trainers').select('*').eq('id', user.id).single()
   if (!trainer) return NextResponse.json({ error: 'Trainer not found' }, { status: 404 })

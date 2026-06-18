@@ -15,7 +15,7 @@ export function SettingsClient({ trainer }: { trainer: Trainer }) {
     const res = await fetch('/api/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ plan }),
+      body: JSON.stringify({ plan, locale }),
     })
     const { url } = await res.json()
     if (url) window.location.href = url

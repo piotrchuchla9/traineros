@@ -107,7 +107,7 @@ export default async function LandingPage() {
               <Card className="h-full">
                 <CardHeader>
                   <CardTitle>Trial</CardTitle>
-                  <div className="text-3xl font-bold">0 zł</div>
+                  <div className="text-3xl font-bold">{l.prices.trial}</div>
                   <div className="text-sm text-muted-foreground">{l.for14days}</div>
                 </CardHeader>
                 <CardContent className="space-y-2 text-sm text-muted-foreground">
@@ -120,7 +120,7 @@ export default async function LandingPage() {
               <Card className="border-primary border-2 h-full">
                 <CardHeader>
                   <CardTitle>Basic</CardTitle>
-                  <div className="text-3xl font-bold">59 zł</div>
+                  <div className="text-3xl font-bold">{l.prices.basic}</div>
                   <div className="text-sm text-muted-foreground">{l.perMonth}</div>
                 </CardHeader>
                 <CardContent className="space-y-2 text-sm text-muted-foreground">
@@ -132,7 +132,7 @@ export default async function LandingPage() {
               <Card className="h-full">
                 <CardHeader>
                   <CardTitle>Pro</CardTitle>
-                  <div className="text-3xl font-bold">99 zł</div>
+                  <div className="text-3xl font-bold">{l.prices.pro}</div>
                   <div className="text-sm text-muted-foreground">{l.perMonth}</div>
                 </CardHeader>
                 <CardContent className="space-y-2 text-sm text-muted-foreground">
