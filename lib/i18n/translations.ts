@@ -297,6 +297,7 @@ const pl = {
     features: [
       { icon: '📋', title: 'Plany treningowe', desc: 'Buduj plany z ćwiczeniami, seriami i wideo. Udostępniaj przez link lub WhatsApp.' },
       { icon: '📅', title: 'Grafik i kalendarz', desc: 'Kalendarz sesji z widokiem dnia. Filtruj po kliencie, lokalizacji i statusie płatności.' },
+      { icon: '🗓️', title: 'Synchronizacja z Google', desc: 'Połącz Google Kalendarz jednym kliknięciem. Każda sesja pojawia się automatycznie w Twoim kalendarzu.' },
       { icon: '💳', title: 'Rozliczenia', desc: 'Oznaczaj sesje jako opłacone jednym kliknięciem. Filtruj nieopłacone szybko.' },
       { icon: '👤', title: 'Portal klienta', desc: 'Klient loguje się i widzi swoje sesje, plany i postępy. Bez aplikacji.' },
       { icon: '📸', title: 'Śledzenie postępów', desc: 'Zdjęcia, waga i pomiary ciała. Wykres wagi w czasie i porównanie przed/po.' },
@@ -305,7 +306,7 @@ const pl = {
     pricingTitle: 'Prosty cennik',
     pricingDesc: 'Zacznij za darmo. Płać tylko gdy rozwijasz biznes.',
     mostPopular: 'Najpopularniejszy',
-    trialFeatures: ['Pełna funkcjonalność przez 14 dni', 'Grafik, plany, postępy, portal', 'Bez karty kredytowej'],
+    trialFeatures: ['Pełna funkcjonalność przez 14 dni', 'Grafik, plany, postępy, portal', 'Synchronizacja z Google Kalendarz', 'Bez karty kredytowej'],
     basicFeatures: ['Do 15 aktywnych klientów', 'Plany + grafik sesji', 'Śledzenie postępów i pomiarów', 'Portal klienta'],
     proFeatures: ['Nielimitowani klienci', 'Wszystko z Basic', 'Priorytetowe wsparcie'],
     perMonth: 'miesięcznie',
@@ -815,6 +816,7 @@ const en: typeof pl = {
     features: [
       { icon: '📋', title: 'Training plans', desc: 'Build plans with exercises, sets and video. Share via link or WhatsApp.' },
       { icon: '📅', title: 'Schedule & calendar', desc: 'Session calendar with day view. Filter by client, location and payment status.' },
+      { icon: '🗓️', title: 'Google Calendar sync', desc: 'Connect Google Calendar in one click. Every session appears automatically in your calendar.' },
       { icon: '💳', title: 'Payments', desc: 'Mark sessions as paid with one click. Quickly filter unpaid ones.' },
       { icon: '👤', title: 'Client portal', desc: 'Clients log in to see their sessions, plans and progress. No app needed.' },
       { icon: '📸', title: 'Progress tracking', desc: 'Photos, weight and body measurements. Weight chart over time and before/after comparison.' },
@@ -823,7 +825,7 @@ const en: typeof pl = {
     pricingTitle: 'Simple pricing',
     pricingDesc: 'Start free. Pay only when you grow your business.',
     mostPopular: 'Most popular',
-    trialFeatures: ['Full functionality for 14 days', 'Schedule, plans, progress, portal', 'No credit card required'],
+    trialFeatures: ['Full functionality for 14 days', 'Schedule, plans, progress, portal', 'Google Calendar sync', 'No credit card required'],
     basicFeatures: ['Up to 15 active clients', 'Plans + session schedule', 'Progress & measurement tracking', 'Client portal'],
     proFeatures: ['Unlimited clients', 'Everything in Basic', 'Priority support'],
     perMonth: 'per month',

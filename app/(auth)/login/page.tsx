@@ -75,7 +75,7 @@ export default function LoginPage() {
             <div className="space-y-1">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">{t.auth.login.password}</Label>
-                <Link href="/forgot-password" className="text-xs text-muted-foreground hover:text-foreground">
+                <Link href="/forgot-password" tabIndex={-1} className="text-xs text-muted-foreground hover:text-foreground">
                   {t.auth.forgotPassword.link}
                 </Link>
               </div>
