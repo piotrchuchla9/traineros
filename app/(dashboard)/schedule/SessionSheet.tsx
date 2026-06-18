@@ -50,6 +50,8 @@ export function SessionSheet({ open, onClose, onSaved, onDeleted, session, clien
   const [notes, setNotes] = useState('')
   const [postNotes, setPostNotes] = useState('')
   const [paid, setPaid] = useState(false)
+  const [sendWhatsapp, setSendWhatsapp] = useState(false)
+  const [sendWhatsappCancel, setSendWhatsappCancel] = useState(false)
   const [formError, setFormError] = useState('')
 
   useEffect(() => {
@@ -93,6 +95,8 @@ export function SessionSheet({ open, onClose, onSaved, onDeleted, session, clien
       setNotes('')
       setPostNotes('')
       setPaid(false)
+      setSendWhatsapp(false)
+      setSendWhatsappCancel(false)
     }
   }, [open, session])
 
@@ -167,6 +171,22 @@ export function SessionSheet({ open, onClose, onSaved, onDeleted, session, clien
       toast.success(session ? t.schedule.toastUpdated : t.schedule.toastAdded)
       onSaved(result, !session)
       onClose()
+      // WhatsApp confirmation
+      if (sendWhatsapp) {
+        const client = clients.find(c => c.id === clientId)
+        const phone = client?.phone?.replace(/\D/g, '')
+        if (phone) {
+          const fmt = (d: string) => new Date(d + 'T12:00:00').toLocaleDateString(t.schedule.locale, { weekday: 'long', day: 'numeric', month: 'long' })
+          const newDate = fmt(result.date)
+          const newTime = result.time ? result.time.slice(0, 5) : ''
+          const location = result.location_name ?? ''
+          const dateChanged = session && (session.date !== result.date || session.time?.slice(0, 5) !== newTime)
+          const msg = dateChanged
+            ? t.schedule.whatsappSessionChanged(fmt(session!.date), session!.time?.slice(0, 5) ?? '', newDate, newTime, result.duration_minutes, location)
+            : t.schedule.whatsappSession(newDate, newTime, result.duration_minutes, location)
+          window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank')
+        }
+      }
       // fire-and-forget Google Calendar sync
       fetch('/api/google/sync', {
         method: 'POST',
@@ -193,6 +213,17 @@ export function SessionSheet({ open, onClose, onSaved, onDeleted, session, clien
     toast.success(t.schedule.toastDeleted)
     onDeleted(session.id)
     onClose()
+    // WhatsApp cancellation
+    if (sendWhatsappCancel) {
+      const client = clients.find(c => c.id === session.client_id)
+      const phone = client?.phone?.replace(/\D/g, '')
+      if (phone) {
+        const formattedDate = new Date(session.date + 'T12:00:00').toLocaleDateString(t.schedule.locale, { weekday: 'long', day: 'numeric', month: 'long' })
+        const formattedTime = session.time ? session.time.slice(0, 5) : ''
+        const msg = t.schedule.whatsappSessionCancelled(formattedDate, formattedTime, session.location_name ?? '')
+        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank')
+      }
+    }
     // fire-and-forget Google Calendar delete
     if (googleEventId) {
       fetch('/api/google/sync', {
@@ -332,6 +363,20 @@ export function SessionSheet({ open, onClose, onSaved, onDeleted, session, clien
               <span className="text-sm font-medium text-foreground">{t.schedule.paidLabel}</span>
             </label>
 
+            {clients.find(c => c.id === clientId)?.phone && (
+              <label className="flex items-center gap-2.5 cursor-pointer py-1">
+                <input
+                  type="checkbox"
+                  checked={sendWhatsapp}
+                  onChange={e => setSendWhatsapp(e.target.checked)}
+                  className="w-4 h-4 rounded accent-primary"
+                />
+                <span className="text-sm font-medium text-foreground flex items-center gap-1.5">
+                  <span>🟢</span>{t.schedule.sendWhatsapp}
+                </span>
+              </label>
+            )}
+
             {formError && <p className="text-sm text-destructive">{formError}</p>}
 
             <div className="flex gap-3 pt-2">
@@ -353,6 +398,17 @@ export function SessionSheet({ open, onClose, onSaved, onDeleted, session, clien
         <DialogContent showCloseButton={false}>
           <DialogHeader><DialogTitle>{t.schedule.delete}</DialogTitle></DialogHeader>
           <p className="text-sm text-muted-foreground">{t.schedule.deleteConfirm}</p>
+          {clients.find(c => c.id === session?.client_id)?.phone && (
+            <label className="flex items-center gap-2.5 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={sendWhatsappCancel}
+                onChange={e => setSendWhatsappCancel(e.target.checked)}
+                className="w-4 h-4 rounded accent-primary"
+              />
+              <span className="text-sm text-foreground">{t.schedule.sendWhatsappCancel}</span>
+            </label>
+          )}
           <DialogFooter>
             <Button variant="outline" onClick={() => setConfirmDelete(false)}>{t.schedule.deleteCancel}</Button>
             <Button variant="destructive" disabled={deleting} onClick={handleDelete}>

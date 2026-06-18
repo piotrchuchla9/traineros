@@ -8,9 +8,9 @@ const COOKIE = 'lang'
 type LangCtx = { locale: Locale; setLocale: (l: Locale) => void; t: ReturnType<typeof getT> }
 
 const LangContext = createContext<LangCtx>({
-  locale: 'pl',
+  locale: 'en',
   setLocale: () => {},
-  t: getT('pl'),
+  t: getT('en'),
 })
 
 export function useT() {
@@ -23,14 +23,14 @@ export function useLang() {
 }
 
 function detectLocale(): Locale {
-  if (typeof window === 'undefined') return 'pl'
+  if (typeof window === 'undefined') return 'en'
   const stored = document.cookie.match(/(?:^|;\s*)lang=([^;]*)/)
   if (stored?.[1] === 'pl' || stored?.[1] === 'en') return stored[1]
-  return navigator.language.startsWith('pl') ? 'pl' : 'en'
+  return 'en'
 }
 
 export function LangProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>('pl')
+  const [locale, setLocaleState] = useState<Locale>('en')
 
   useEffect(() => {
     setLocaleState(detectLocale())

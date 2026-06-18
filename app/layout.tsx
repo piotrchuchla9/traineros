@@ -17,7 +17,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pl" className="h-full" suppressHydrationWarning>
+    <html lang="en" className="h-full dark" suppressHydrationWarning>
+      <head>
+        {/* Prevent theme flash — runs before React hydrates */}
+        <script dangerouslySetInnerHTML={{ __html: `(function(){var t=localStorage.getItem('theme')||'dark';document.documentElement.classList.toggle('dark',t==='dark');})()` }} />
+      </head>
       <body className={`${inter.className} h-full antialiased`} suppressHydrationWarning>
         <ThemeProvider>
           <LangProvider>

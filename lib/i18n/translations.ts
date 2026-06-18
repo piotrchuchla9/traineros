@@ -379,6 +379,14 @@ const pl = {
     today: 'Dziś',
     clearFilters: 'Wyczyść',
     locale: 'pl-PL',
+    sendWhatsapp: 'Wyślij potwierdzenie na WhatsApp',
+    whatsappSession: (date: string, time: string, duration: number, location: string) =>
+      `Cześć! Potwierdzenie treningu:\nData: ${date}\nGodzina: ${time}\nCzas: ${duration} min\nMiejsce: ${location}`,
+    whatsappSessionChanged: (oldDate: string, oldTime: string, newDate: string, newTime: string, duration: number, location: string) =>
+      `Cześć! Zmiana terminu treningu:\nPoprzedni termin: ${oldDate}, ${oldTime}\nNowy termin: ${newDate}, ${newTime}\nCzas: ${duration} min\nMiejsce: ${location}`,
+    whatsappSessionCancelled: (date: string, time: string, location: string) =>
+      `Cześć! Trening odwołany:\nData: ${date}\nGodzina: ${time}\nMiejsce: ${location}`,
+    sendWhatsappCancel: 'Wyślij informację o odwołaniu na WhatsApp',
     gcalConnect: 'Połącz Google Kalendarz',
     gcalDisconnect: 'Odłącz',
     gcalSyncAll: 'Sync z Google',
@@ -898,6 +906,14 @@ const en: typeof pl = {
     today: 'Today',
     clearFilters: 'Clear',
     locale: 'en-US',
+    sendWhatsapp: 'Send WhatsApp confirmation',
+    whatsappSession: (date: string, time: string, duration: number, location: string) =>
+      `Hi! Session confirmation:\nDate: ${date}\nTime: ${time}\nDuration: ${duration} min\nLocation: ${location}`,
+    whatsappSessionChanged: (oldDate: string, oldTime: string, newDate: string, newTime: string, duration: number, location: string) =>
+      `Hi! Session rescheduled:\nPrevious: ${oldDate}, ${oldTime}\nNew: ${newDate}, ${newTime}\nDuration: ${duration} min\nLocation: ${location}`,
+    whatsappSessionCancelled: (date: string, time: string, location: string) =>
+      `Hi! Session cancelled:\nDate: ${date}\nTime: ${time}\nLocation: ${location}`,
+    sendWhatsappCancel: 'Send cancellation via WhatsApp',
     gcalConnect: 'Connect Google Calendar',
     gcalDisconnect: 'Disconnect',
     gcalSyncAll: 'Sync with Google',

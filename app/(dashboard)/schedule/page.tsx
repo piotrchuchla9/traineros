@@ -32,7 +32,7 @@ export default async function SchedulePage({ searchParams }: { searchParams: Pro
       .select('*, client:clients(id,name), location:trainer_locations(id,name)')
       .eq('trainer_id', user.id)
       .order('date').order('time'),
-    supabase.from('clients').select('id,name').eq('trainer_id', user.id).eq('active', true).order('name'),
+    supabase.from('clients').select('id,name,phone').eq('trainer_id', user.id).eq('active', true).order('name'),
     supabase.from('trainer_locations').select('*').eq('trainer_id', user.id).order('name'),
     (supabase as any)
       .from('trainer_google_tokens')
