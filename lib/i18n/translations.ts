@@ -323,6 +323,7 @@ const pl = {
     trialEndingLink: 'Dodaj kartę',
     limitReached: (count: number, limit: number) => `Masz ${count}/${limit} klientów. Przejdź na Pro żeby dodać więcej.`,
     limitLink: 'Upgrade do Pro',
+    readOnly: 'Tryb tylko do odczytu — nie możesz dodawać ani edytować danych.',
   },
   schedule: {
     title: 'Grafik',
@@ -483,6 +484,7 @@ const pl = {
       calf: 'Łydka',
     },
     weightChart: 'Waga w czasie',
+    chartWeight: 'Waga',
     measurementTrend: 'Zmiana pomiarów',
     addMeasurement: '+ Dodaj pomiar',
     measurementName: 'Nazwa pomiaru',
@@ -830,6 +832,7 @@ const en: typeof pl = {
     trialEndingLink: 'Add card',
     limitReached: (count: number, limit: number) => `You have ${count}/${limit} clients. Upgrade to Pro to add more.`,
     limitLink: 'Upgrade to Pro',
+    readOnly: 'Read-only mode — you cannot add or edit data.',
   },
   schedule: {
     title: 'Schedule',
@@ -986,6 +989,7 @@ const en: typeof pl = {
       calf: 'Calf',
     },
     weightChart: 'Weight over time',
+    chartWeight: 'Weight',
     measurementTrend: 'Measurement changes',
     addMeasurement: '+ Add measurement',
     measurementName: 'Measurement name',

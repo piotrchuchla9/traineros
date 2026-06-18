@@ -17,7 +17,7 @@ import { exName, exDesc } from '@/lib/i18n/exercise'
 
 const ALL = 'all'
 
-export function ExercisesClient({ exercises: initial, trainerId }: { exercises: Exercise[]; trainerId: string }) {
+export function ExercisesClient({ exercises: initial, trainerId, restricted = false }: { exercises: Exercise[]; trainerId: string; restricted?: boolean }) {
   const t = useT()
   const { locale } = useLang()
   const [exercises, setExercises] = useState(initial)
@@ -97,7 +97,7 @@ export function ExercisesClient({ exercises: initial, trainerId }: { exercises: 
           </span>
           {t.exercises.myOnly}
         </button>
-        <Button onClick={() => setOpen(true)}>{t.exercises.add}</Button>
+        {!restricted && <Button onClick={() => setOpen(true)}>{t.exercises.add}</Button>}
       </div>
 
       {/* Filters */}
@@ -144,7 +144,7 @@ export function ExercisesClient({ exercises: initial, trainerId }: { exercises: 
                       {t.exercises.video}
                     </a>
                   )}
-                  {ex.trainer_id === trainerId && (
+                  {ex.trainer_id === trainerId && !restricted && (
                     <button onClick={() => setDeleteTarget(ex)} className="cursor-pointer text-muted-foreground/40 hover:text-destructive text-sm transition-colors">
                       {t.exercises.deleteBtn}
                     </button>

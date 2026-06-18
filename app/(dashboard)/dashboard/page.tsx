@@ -8,6 +8,7 @@ import { SubscriptionBanner } from '@/components/shared/SubscriptionBanner'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { cn } from '@/lib/utils'
 import { getServerT } from '@/lib/i18n/server'
+import { isRestricted } from '@/lib/access'
 
 const CLIENT_LIMITS: Record<string, number> = { trial: 999, basic: 15, pro: 999, inactive: 0 }
 
@@ -51,7 +52,8 @@ export default async function DashboardPage() {
   )
   const activeCount = allClients.filter((c: any) => c.active).length
   const limit = CLIENT_LIMITS[trainer.plan] ?? 0
-  const canAddClient = activeCount < limit
+  const restricted = isRestricted(trainer)
+  const canAddClient = !restricted && activeCount < limit
 
   // Group upcoming sessions by date
   const upcomingList: any[] = upcoming ?? []

@@ -148,9 +148,10 @@ interface Props {
   trainerId: string
   initialYear: number
   initialMonth: number
+  restricted?: boolean
 }
 
-export function ScheduleClient({ initialSessions, initialAllSessions, clients, locations: initialLocations, trainerId, initialYear, initialMonth }: Props) {
+export function ScheduleClient({ initialSessions, initialAllSessions, clients, locations: initialLocations, trainerId, initialYear, initialMonth, restricted = false }: Props) {
   const t = useT()
   const [tab, setTab] = useState<'calendar' | 'list'>('calendar')
   const [year, setYear] = useState(initialYear)
@@ -295,7 +296,7 @@ export function ScheduleClient({ initialSessions, initialAllSessions, clients, l
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-foreground">{t.schedule.title}</h1>
-        <Button onClick={() => { setEditSession(null); setSheetOpen(true) }}>{t.schedule.addSession}</Button>
+        {!restricted && <Button onClick={() => { setEditSession(null); setSheetOpen(true) }}>{t.schedule.addSession}</Button>}
       </div>
 
       {/* Tabs */}
@@ -343,16 +344,18 @@ export function ScheduleClient({ initialSessions, initialAllSessions, clients, l
                 <h3 className="text-sm font-semibold text-foreground">
                   {new Date(selectedDate + 'T12:00:00').toLocaleDateString(t.schedule.locale, { weekday: 'long', day: 'numeric', month: 'long' })}
                 </h3>
-                <Button size="sm" variant="outline" onClick={() => { setEditSession(null); setSheetOpen(true) }}>
-                  {t.schedule.addSession}
-                </Button>
+                {!restricted && (
+                  <Button size="sm" variant="outline" onClick={() => { setEditSession(null); setSheetOpen(true) }}>
+                    {t.schedule.addSession}
+                  </Button>
+                )}
               </div>
               {daySession.length === 0 ? (
                 <p className="text-sm text-muted-foreground">{t.schedule.noSessionsDay}</p>
               ) : (
                 <div className="space-y-2">
                   {daySession.map(s => (
-                    <SessionCard key={s.id} session={s} {...cardProps} onClick={() => { setEditSession(s); setSheetOpen(true) }} />
+                    <SessionCard key={s.id} session={s} {...cardProps} onClick={() => { if (!restricted) { setEditSession(s); setSheetOpen(true) } }} />
                   ))}
                 </div>
               )}
@@ -382,7 +385,7 @@ export function ScheduleClient({ initialSessions, initialAllSessions, clients, l
               ? <p className="text-sm text-muted-foreground">{t.schedule.noUpcoming}</p>
               : <div className="space-y-2">
                   {upcoming.map(s => (
-                    <SessionCard key={s.id} session={s} {...cardProps} onClick={() => { setEditSession(s); setSheetOpen(true) }} />
+                    <SessionCard key={s.id} session={s} {...cardProps} onClick={() => { if (!restricted) { setEditSession(s); setSheetOpen(true) } }} />
                   ))}
                 </div>
           )}
@@ -391,7 +394,7 @@ export function ScheduleClient({ initialSessions, initialAllSessions, clients, l
               ? <p className="text-sm text-muted-foreground">{t.schedule.noPast}</p>
               : <div className="space-y-2">
                   {past.map(s => (
-                    <SessionCard key={s.id} session={s} {...cardProps} onClick={() => { setEditSession(s); setSheetOpen(true) }} />
+                    <SessionCard key={s.id} session={s} {...cardProps} onClick={() => { if (!restricted) { setEditSession(s); setSheetOpen(true) } }} />
                   ))}
                 </div>
           )}

@@ -16,9 +16,10 @@ interface Props {
   plans: Plan[]
   clientId: string
   trainerId: string
+  restricted?: boolean
 }
 
-export function ProgressSection({ entries, logs, plans, clientId, trainerId }: Props) {
+export function ProgressSection({ entries, logs, plans, clientId, trainerId, restricted = false }: Props) {
   const t = useT()
 
   return (
@@ -26,7 +27,7 @@ export function ProgressSection({ entries, logs, plans, clientId, trainerId }: P
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-foreground">{t.progress.progressPhotos}</h2>
-          <AddProgressEntrySheet clientId={clientId} trainerId={trainerId} />
+          {!restricted && <AddProgressEntrySheet clientId={clientId} trainerId={trainerId} />}
         </div>
         {entries.length >= 2 && (
           <div className="mb-6 space-y-4">
@@ -40,7 +41,7 @@ export function ProgressSection({ entries, logs, plans, clientId, trainerId }: P
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-foreground">{t.progress.workoutLogs}</h2>
-          <AddWorkoutLogSheet clientId={clientId} trainerId={trainerId} plans={plans} />
+          {!restricted && <AddWorkoutLogSheet clientId={clientId} trainerId={trainerId} plans={plans} />}
         </div>
         <WorkoutLogsSection logs={logs} />
       </div>

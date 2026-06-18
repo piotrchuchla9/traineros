@@ -19,9 +19,10 @@ interface Props {
   client: Client
   locations: TrainerLocation[]
   trainerId: string
+  restricted?: boolean
 }
 
-export function ClientSessionsList({ initialSessions, client, locations: initialLocations, trainerId }: Props) {
+export function ClientSessionsList({ initialSessions, client, locations: initialLocations, trainerId, restricted = false }: Props) {
   const t = useT()
   const [sessions, setSessions] = useState<TrainingSession[]>(initialSessions)
   const [locations, setLocations] = useState<TrainerLocation[]>(initialLocations)
@@ -99,8 +100,8 @@ export function ClientSessionsList({ initialSessions, client, locations: initial
             const locName = (s.location as any)?.name ?? s.location_name ?? ''
             const isOnline = locName === 'Online'
             return (
-              <Card key={s.id} className="cursor-pointer hover:shadow-md transition-shadow"
-                onClick={() => { setEditSession(s); setSheetOpen(true) }}>
+              <Card key={s.id} className={`hover:shadow-md transition-shadow ${!restricted ? 'cursor-pointer' : ''}`}
+                onClick={() => { if (!restricted) { setEditSession(s); setSheetOpen(true) } }}>
                 <CardContent className="py-3 px-4 flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-muted-foreground">

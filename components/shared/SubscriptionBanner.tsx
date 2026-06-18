@@ -26,9 +26,9 @@ export function SubscriptionBanner({
     return (
       <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 flex items-center justify-between mb-6">
         <p className="text-sm text-red-800 font-medium">
-          {t.banner.inactive}
+          {t.banner.inactive} {t.banner.readOnly}
         </p>
-        <Link href="/settings" className="text-sm font-semibold text-red-900 underline">
+        <Link href="/settings" className="text-sm font-semibold text-red-900 underline shrink-0 ml-4">
           {t.banner.inactiveLink}
         </Link>
       </div>
@@ -40,9 +40,9 @@ export function SubscriptionBanner({
       return (
         <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 flex items-center justify-between mb-6">
           <p className="text-sm text-red-800 font-medium">
-            {t.banner.trialExpired}
+            {t.banner.trialExpired} {t.banner.readOnly}
           </p>
-          <Link href="/settings" className="text-sm font-semibold text-red-900 underline">
+          <Link href="/settings" className="text-sm font-semibold text-red-900 underline shrink-0 ml-4">
             {t.banner.trialExpiredLink}
           </Link>
         </div>

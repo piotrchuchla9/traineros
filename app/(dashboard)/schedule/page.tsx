@@ -3,6 +3,7 @@ import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { AppLayout } from '@/components/shared/AppLayout'
 import { ScheduleClient } from './ScheduleClient'
 import { getCalendarDays, toDateStr } from './utils'
+import { isRestricted } from '@/lib/access'
 import type { Client, TrainerLocation } from '@/types/database'
 
 export default async function SchedulePage() {
@@ -11,6 +12,8 @@ export default async function SchedulePage() {
   if (!user) redirect('/login')
 
   const now = new Date()
+  const { data: trainer } = await supabase.from('trainers').select('plan, trial_ends_at').eq('id', user.id).single()
+  const restricted = trainer ? isRestricted(trainer) : false
   const calDays = getCalendarDays(now.getFullYear(), now.getMonth())
   const calFrom = toDateStr(calDays[0].date)
   const calTo = toDateStr(calDays[calDays.length - 1].date)
@@ -42,6 +45,7 @@ export default async function SchedulePage() {
         trainerId={user.id}
         initialYear={now.getFullYear()}
         initialMonth={now.getMonth()}
+        restricted={restricted}
       />
     </AppLayout>
   )

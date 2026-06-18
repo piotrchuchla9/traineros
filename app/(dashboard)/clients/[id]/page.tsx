@@ -14,6 +14,7 @@ import { ClientAccountSection } from './ClientAccountSection'
 import { ClientSessionsList } from './ClientSessionsList'
 import { cn } from '@/lib/utils'
 import { getServerT } from '@/lib/i18n/server'
+import { isRestricted } from '@/lib/access'
 import type { ProgressEntry, TrainerLocation, TrainingSession, WorkoutLog } from '@/types/database'
 
 export default async function ClientPage({ params }: { params: Promise<{ id: string }> }) {
@@ -84,6 +85,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
     exercises: (log.exercises ?? []).sort((a, b) => a.exercise_order - b.exercise_order),
   }))
 
+  const { data: trainer } = await supabase.from('trainers').select('plan, trial_ends_at').eq('id', user.id).single()
+  const restricted = trainer ? isRestricted(trainer) : false
+
   const [{ data: sessions }, { data: locations }] = await Promise.all([
     (supabase as any)
       .from('training_sessions')
@@ -115,13 +119,15 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             {client.goal && <p className="text-muted-foreground">{client.goal}</p>}
           </div>
         </div>
-        <div className="flex gap-2">
-          <Link href={`/clients/${id}/plans/new`} className={cn(buttonVariants())}>
-            {t.client.newPlan}
-          </Link>
-          <EditClientSheet client={{ ...client, avatarSignedUrl }} />
-          <DeleteClientButton clientId={id} clientName={client.name} />
-        </div>
+        {!restricted && (
+          <div className="flex gap-2">
+            <Link href={`/clients/${id}/plans/new`} className={cn(buttonVariants())}>
+              {t.client.newPlan}
+            </Link>
+            <EditClientSheet client={{ ...client, avatarSignedUrl }} />
+            <DeleteClientButton clientId={id} clientName={client.name} />
+          </div>
+        )}
       </div>
 
       {/* Info */}
@@ -160,15 +166,17 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         <Card className="border-dashed">
           <CardContent className="py-10 text-center">
             <p className="text-muted-foreground mb-4">{t.client.noPlans(client.name)}</p>
-            <Link href={`/clients/${id}/plans/new`} className={cn(buttonVariants())}>
-              {t.client.createPlan}
-            </Link>
+            {!restricted && (
+              <Link href={`/clients/${id}/plans/new`} className={cn(buttonVariants())}>
+                {t.client.createPlan}
+              </Link>
+            )}
           </CardContent>
         </Card>
       ) : (
         <div className="space-y-3">
           {plans.map(plan => (
-            <PlanCard key={plan.id} plan={plan} clientPhone={client.phone} clientId={id} />
+            <PlanCard key={plan.id} plan={plan} clientPhone={client.phone} clientId={id} restricted={restricted} />
           ))}
         </div>
       )}
@@ -180,6 +188,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           client={client}
           locations={locations ?? []}
           trainerId={user.id}
+          restricted={restricted}
         />
       </div>
 
@@ -189,6 +198,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           clientId={id}
           email={client.email}
           hasAccount={!!client.auth_user_id}
+          restricted={restricted}
         />
       </div>
 
@@ -197,6 +207,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         <ProgressSection
           entries={entries}
           logs={logs}
+          restricted={restricted}
           plans={plans ?? []}
           clientId={id}
           trainerId={user.id}

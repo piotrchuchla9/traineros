@@ -13,9 +13,10 @@ interface Props {
   clientId: string
   email: string | null
   hasAccount: boolean
+  restricted?: boolean
 }
 
-export function ClientAccountSection({ clientId, email, hasAccount: initialHasAccount }: Props) {
+export function ClientAccountSection({ clientId, email, hasAccount: initialHasAccount, restricted = false }: Props) {
   const t = useT()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
@@ -96,9 +97,11 @@ export function ClientAccountSection({ clientId, email, hasAccount: initialHasAc
           ) : (
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <p className="text-sm text-muted-foreground">{t.clientAccount.noAccount}</p>
+              {!restricted && (
               <Button size="sm" disabled={loading} onClick={handleCreate}>
                 {loading ? t.clientAccount.creating : t.clientAccount.create}
               </Button>
+            )}
             </div>
           )}
         </CardContent>

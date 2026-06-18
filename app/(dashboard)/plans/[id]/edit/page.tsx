@@ -2,6 +2,7 @@ import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { PlanEditorClient } from '@/components/plan-editor/PlanEditorClient'
+import { isRestricted } from '@/lib/access'
 import type { PlanState, PlanDayWithExercises } from '@/types/database'
 import { getServerT } from '@/lib/i18n/server'
 
@@ -11,6 +12,9 @@ export default async function PlanEditPage({ params }: { params: Promise<{ id: s
   const supabase = await createSupabaseServerClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+
+  const { data: trainer } = await supabase.from('trainers').select('plan, trial_ends_at').eq('id', user.id).single()
+  if (trainer && isRestricted(trainer)) redirect('/settings')
 
   const { data: plan } = await supabase
     .from('plans')

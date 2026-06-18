@@ -22,7 +22,7 @@ type Plan = {
   share_token: string
 }
 
-export function PlanCard({ plan, clientPhone, clientId }: { plan: Plan; clientPhone?: string | null; clientId: string }) {
+export function PlanCard({ plan, clientPhone, clientId, restricted = false }: { plan: Plan; clientPhone?: string | null; clientId: string; restricted?: boolean }) {
   const t = useT()
   const router = useRouter()
   const [active, setActive] = useState(plan.active)
@@ -57,8 +57,8 @@ export function PlanCard({ plan, clientPhone, clientId }: { plan: Plan; clientPh
   return (
     <>
       <Card
-        className="hover:shadow-md transition-shadow cursor-pointer"
-        onClick={() => router.push(`/plans/${plan.id}/edit`)}
+        className={`hover:shadow-md transition-shadow ${!restricted ? 'cursor-pointer' : ''}`}
+        onClick={() => !restricted && router.push(`/plans/${plan.id}/edit`)}
       >
         <CardContent className="py-4 px-5 flex items-center justify-between">
           <div>
@@ -68,8 +68,8 @@ export function PlanCard({ plan, clientPhone, clientId }: { plan: Plan; clientPh
           <div className="flex items-center gap-3">
             <Badge
               variant={active ? 'default' : 'secondary'}
-              className="cursor-pointer"
-              onClick={toggleActive}
+              className={!restricted ? 'cursor-pointer' : ''}
+              onClick={!restricted ? toggleActive : undefined}
             >
               {active ? t.client.activePlan : t.client.archivedPlan}
             </Badge>
@@ -110,19 +110,23 @@ export function PlanCard({ plan, clientPhone, clientId }: { plan: Plan; clientPh
                 {t.plan.whatsapp}
               </a>
             )}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={e => { e.stopPropagation(); setCopyOpen(true) }}
-            >
-              {t.plan.copyTo}
-            </Button>
-            <button
-              onClick={e => { e.stopPropagation(); setConfirmOpen(true) }}
-              className="cursor-pointer text-muted-foreground/40 hover:text-destructive text-sm transition-colors"
-            >
-              {t.plan.deleteBtn}
-            </button>
+            {!restricted && (
+              <>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={e => { e.stopPropagation(); setCopyOpen(true) }}
+                >
+                  {t.plan.copyTo}
+                </Button>
+                <button
+                  onClick={e => { e.stopPropagation(); setConfirmOpen(true) }}
+                  className="cursor-pointer text-muted-foreground/40 hover:text-destructive text-sm transition-colors"
+                >
+                  {t.plan.deleteBtn}
+                </button>
+              </>
+            )}
           </div>
         </CardContent>
       </Card>
