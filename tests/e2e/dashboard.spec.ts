@@ -9,9 +9,9 @@ test.describe('Dashboard trenera', () => {
 
   test('nawigacja działa', async ({ page }) => {
     await page.goto('/dashboard')
-    await expect(page.getByRole('link', { name: /schedule|grafik/i })).toBeVisible()
-    await expect(page.getByRole('link', { name: /exercises|ćwiczenia/i })).toBeVisible()
-    await expect(page.getByRole('link', { name: /settings|ustawienia/i })).toBeVisible()
+    await expect(page.getByRole('link', { name: /schedule|grafik/i }).first()).toBeVisible()
+    await expect(page.getByRole('link', { name: /exercises|ćwiczenia/i }).first()).toBeVisible()
+    await expect(page.getByRole('link', { name: /settings|ustawienia/i }).first()).toBeVisible()
   })
 
   test('sekcja nadchodzące sesje jest widoczna', async ({ page }) => {
@@ -21,7 +21,7 @@ test.describe('Dashboard trenera', () => {
 
   test('przycisk dodaj klienta istnieje', async ({ page }) => {
     await page.goto('/dashboard')
-    await expect(page.getByRole('link', { name: /dodaj klienta|add client/i })).toBeVisible()
+    await expect(page.getByRole('link', { name: /dodaj klienta|add client/i }).first()).toBeVisible()
   })
 
   test('niezalogowany jest przekierowany', async ({ page, context }) => {

@@ -8,22 +8,22 @@ test.describe('Klienci', () => {
 
   test('można przejść do profilu klienta', async ({ page }) => {
     await page.goto('/dashboard')
-    // Kliknij pierwszą kartę klienta jeśli istnieje
-    const clientCard = page.locator('a[href*="/clients/"]').first()
+    // Kliknij pierwszą kartę klienta jeśli istnieje (wyklucz /clients/new)
+    const clientCard = page.locator('a[href*="/clients/"]:not([href$="/new"])').first()
     const hasClients = await clientCard.count() > 0
     if (!hasClients) {
       test.skip() // brak klientów - pomiń
       return
     }
     await clientCard.click()
-    await expect(page).toHaveURL(/\/clients\//)
+    await expect(page).toHaveURL(/\/clients\/\w/)
     await expect(page.getByText(/plany treningowe|training plans/i)).toBeVisible()
     await expect(page.getByText(/sesje treningowe|training sessions/i)).toBeVisible()
   })
 
   test('strona klienta ma sekcję sesji', async ({ page }) => {
     await page.goto('/dashboard')
-    const clientCard = page.locator('a[href*="/clients/"]').first()
+    const clientCard = page.locator('a[href*="/clients/"]:not([href$="/new"])').first()
     if (await clientCard.count() === 0) { test.skip(); return }
     await clientCard.click()
     await expect(page.getByText(/sesje treningowe|training sessions/i)).toBeVisible()
@@ -39,7 +39,7 @@ test.describe('Klienci', () => {
 
   test('walidacja formularza klienta działa', async ({ page }) => {
     await page.goto('/clients/new')
-    await page.getByRole('button', { name: /zapisz|save|dodaj|add/i }).click()
+    await page.getByRole('button', { name: /add client|dodaj klienta/i }).click()
     // Puste imię nie powinno przejść
     await expect(page.getByRole('textbox', { name: /imię|name/i })).toBeFocused()
   })

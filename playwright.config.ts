@@ -1,4 +1,8 @@
 import { defineConfig, devices } from '@playwright/test'
+import { config } from 'dotenv'
+import path from 'path'
+
+config({ path: path.resolve(__dirname, '.env.local') })
 
 const BASE_URL = process.env.E2E_BASE_URL ?? 'http://localhost:3000'
 
@@ -21,7 +25,7 @@ export default defineConfig({
       name: 'trainer',
       use: { ...devices['Desktop Chrome'], storageState: 'tests/.auth/trainer.json' },
       dependencies: ['setup-trainer'],
-      testIgnore: /.*setup\.ts|client-portal\.spec\.ts/,
+      testIgnore: /.*setup\.ts|client-portal\.spec\.ts|landing\.spec\.ts/,
     },
     {
       name: 'client-portal',

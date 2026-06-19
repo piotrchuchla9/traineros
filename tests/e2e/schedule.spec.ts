@@ -44,7 +44,7 @@ test.describe('Grafik', () => {
 
   test('można otworzyć formularz nowej sesji', async ({ page }) => {
     await page.goto('/schedule')
-    await page.getByRole('button', { name: /\+ nowa sesja|\+ new session/i }).click()
+    await page.getByRole('button', { name: /\+ nowa sesja|\+ new session/i }).first().click()
     await expect(page.getByRole('heading', { name: /nowa sesja|new session/i })).toBeVisible()
     // Wymagane pola są oznaczone
     await expect(page.getByText(/klient|client/i).first()).toBeVisible()
@@ -53,7 +53,7 @@ test.describe('Grafik', () => {
 
   test('switch Online działa w formularzu sesji', async ({ page }) => {
     await page.goto('/schedule')
-    await page.getByRole('button', { name: /\+ nowa sesja|\+ new session/i }).click()
+    await page.getByRole('button', { name: /\+ nowa sesja|\+ new session/i }).first().click()
     const onlineSwitch = page.getByRole('switch', { name: /online/i })
     await expect(onlineSwitch).toBeVisible()
     await onlineSwitch.click()
@@ -62,7 +62,7 @@ test.describe('Grafik', () => {
 
   test('walidacja formularza sesji działa', async ({ page }) => {
     await page.goto('/schedule')
-    await page.getByRole('button', { name: /\+ nowa sesja|\+ new session/i }).click()
+    await page.getByRole('button', { name: /\+ nowa sesja|\+ new session/i }).first().click()
     // Wyczyść godzinę i kliknij zapisz
     await page.getByRole('button', { name: /zapisz|save/i }).first().click()
     // Powinien pojawić się błąd walidacji
