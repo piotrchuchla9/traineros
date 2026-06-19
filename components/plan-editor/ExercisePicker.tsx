@@ -120,22 +120,24 @@ export function ExercisePicker({
           </div>
 
           {/* Results */}
-          <div className="overflow-y-auto flex-1 space-y-1">
-            {loading ? (
+          <div className="overflow-y-auto flex-1 min-h-[320px]">
+            {loading && exercises.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-8">{t.planEditor.picker.loading}</p>
             ) : exercises.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-8">{t.planEditor.picker.noResults}</p>
             ) : (
-              exercises.map(ex => (
-                <button
-                  key={ex.id}
-                  onClick={() => { onSelect(ex); onClose() }}
-                  className="cursor-pointer w-full text-left px-3 py-2.5 rounded-md hover:bg-accent transition-colors flex items-center justify-between group"
-                >
-                  <span className="font-medium text-foreground text-sm">{exName(ex, locale)}</span>
-                  <Badge variant="secondary" className="text-xs">{muscleLabel(ex.muscle_group)}</Badge>
-                </button>
-              ))
+              <div className={`space-y-1 transition-opacity duration-150 ${loading ? 'opacity-40 pointer-events-none' : 'opacity-100'}`}>
+                {exercises.map(ex => (
+                  <button
+                    key={ex.id}
+                    onClick={() => { onSelect(ex); onClose() }}
+                    className="cursor-pointer w-full text-left px-3 py-2.5 rounded-md hover:bg-accent transition-colors flex items-center justify-between group"
+                  >
+                    <span className="font-medium text-foreground text-sm">{exName(ex, locale)}</span>
+                    <Badge variant="secondary" className="text-xs">{muscleLabel(ex.muscle_group)}</Badge>
+                  </button>
+                ))}
+              </div>
             )}
           </div>
 

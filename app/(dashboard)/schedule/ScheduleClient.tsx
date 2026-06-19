@@ -34,7 +34,7 @@ function SessionCard({ session, use12h, locale, atLabel, durationFn, paidOkLabel
   const locName = (session.location as any)?.name ?? session.location_name ?? ''
   const isOnline = locName === 'Online'
   return (
-    <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={onClick}>
+    <Card className="cursor-pointer hover:bg-accent/50 hover:ring-foreground/30 transition-all" onClick={onClick}>
       <CardContent className="py-3 px-4 flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">

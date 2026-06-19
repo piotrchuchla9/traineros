@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { google } from 'googleapis'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { randomBytes } from 'crypto'
 
 export async function GET() {
   const supabase = await createSupabaseServerClient()
@@ -13,15 +14,26 @@ export async function GET() {
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/google/callback`
   )
 
+  // CSRF protection: random nonce bound to this trainer's session
+  const nonce = randomBytes(32).toString('hex')
+
   const url = oauth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: [
       'https://www.googleapis.com/auth/calendar.events',
       'https://www.googleapis.com/auth/calendar.readonly',
     ],
-    state: user.id,
+    state: nonce,
     prompt: 'consent',
   })
 
-  return NextResponse.redirect(url)
+  const res = NextResponse.redirect(url)
+  // Store nonce + trainerId in a short-lived httpOnly cookie
+  res.cookies.set('gcal_oauth_nonce', `${nonce}:${user.id}`, {
+    httpOnly: true,
+    sameSite: 'lax',
+    maxAge: 600, // 10 minutes
+    path: '/',
+  })
+  return res
 }

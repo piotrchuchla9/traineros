@@ -57,7 +57,7 @@ export function PlanCard({ plan, clientPhone, clientId, restricted = false }: { 
   return (
     <>
       <Card
-        className={`hover:shadow-md transition-shadow ${!restricted ? 'cursor-pointer' : ''}`}
+        className={`transition-all ${!restricted ? 'cursor-pointer hover:bg-accent/50 hover:ring-foreground/30' : ''}`}
         onClick={() => !restricted && router.push(`/plans/${plan.id}/edit`)}
       >
         <CardContent className="py-4 px-5 flex items-center justify-between">

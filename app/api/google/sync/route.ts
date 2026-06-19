@@ -12,8 +12,18 @@ export async function POST(req: NextRequest) {
   const { session } = await req.json() as { session: TrainingSession }
   const service = createSupabaseServiceClient()
 
+  // Verify session belongs to the authenticated trainer
+  const { data: owned } = await (service as any)
+    .from('training_sessions')
+    .select('id, google_event_id')
+    .eq('id', session.id)
+    .eq('trainer_id', user.id)
+    .maybeSingle()
+  if (!owned) return NextResponse.json({ ok: false }, { status: 403 })
+
   try {
-    let googleEventId: string | null = session.google_event_id ?? null
+    // Use DB value for google_event_id, not client-supplied one
+    let googleEventId: string | null = owned.google_event_id ?? null
 
     if (googleEventId) {
       await updateCalendarEvent(user.id, googleEventId, session)

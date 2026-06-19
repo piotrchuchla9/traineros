@@ -162,7 +162,7 @@ export default async function DashboardPage() {
         <div className="space-y-3">
           {allClients.map((client: any) => (
             <Link key={client.id} href={`/clients/${client.id}`} className="block">
-              <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="hover:bg-accent/50 hover:ring-foreground/30 transition-all cursor-pointer">
                 <CardContent className="py-4 px-5 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     {client.avatarSignedUrl ? (
