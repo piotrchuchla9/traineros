@@ -37,7 +37,7 @@ export default defineConfig({
     {
       name: 'public',
       use: { ...devices['Desktop Chrome'] },
-      testMatch: /landing\.spec\.ts/,
+      testMatch: /landing\.spec\.ts|screenshots-landing\.spec\.ts/,
     },
   ],
 })
