@@ -7,12 +7,30 @@ import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
+const siteUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://traineros.live'
+
 export const metadata: Metadata = {
-  title: 'TrainerOS — platforma dla trenerów personalnych',
-  description: 'Twórz i udostępniaj plany treningowe swoim klientom bez zakładania konta.',
-  icons: {
-    icon: '/favicon.svg',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: 'TrainerOS — Personal Training Platform',
+    template: '%s | TrainerOS',
   },
+  description: 'Create and share workout plans with your clients. Manage clients, exercises, and schedules in one place.',
+  icons: { icon: '/favicon.svg' },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'TrainerOS',
+    title: 'TrainerOS — Personal Training Platform',
+    description: 'Create and share workout plans with your clients. Manage clients, exercises, and schedules in one place.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'TrainerOS — Personal Training Platform',
+    description: 'Create and share workout plans with your clients.',
+  },
+  robots: { index: true, follow: true },
+  alternates: { canonical: '/' },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
