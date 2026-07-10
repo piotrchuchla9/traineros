@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { buttonVariants } from '@/components/ui/button'
@@ -8,6 +9,7 @@ import { LangSwitcher } from '@/components/shared/LangSwitcher'
 import { getServerT } from '@/lib/i18n/server'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { cn } from '@/lib/utils'
+import { posts } from '@/lib/blog/posts'
 
 export default async function LandingPage() {
   let authenticated = false
@@ -22,6 +24,8 @@ export default async function LandingPage() {
 
   const t = await getServerT()
   const l = t.landing
+  const jar = await cookies()
+  const locale = jar.get('lang')?.value === 'pl' ? 'pl' : 'en'
 
   return (
     <div className="min-h-screen bg-background app-bg relative overflow-hidden">
@@ -34,6 +38,9 @@ export default async function LandingPage() {
       <nav className="relative z-10 border-b border-border px-6 py-4 flex items-center justify-between max-w-6xl mx-auto">
         <span className="text-xl font-bold text-foreground">TrainerOS</span>
         <div className="flex items-center gap-2">
+          <Link href="/blog" className="px-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            Blog
+          </Link>
           <LangSwitcher />
           <ThemeSwitcher />
           <Link href="/login" className={cn(buttonVariants({ variant: 'ghost' }))}>
@@ -149,10 +156,36 @@ export default async function LandingPage() {
         </div>
       </section>
 
+      {/* Blog */}
+      <section className="py-20 px-6 border-t border-border">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-foreground text-center mb-10">
+            {locale === 'pl' ? 'Z bloga' : 'From the blog'}
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {posts.map((post) => {
+              const content = post[locale]
+              return (
+                <Link key={post.slug} href={`/blog/${post.slug}`} className="rounded-xl border border-border bg-card p-5 space-y-2 hover:border-primary transition-colors">
+                  <h3 className="font-semibold text-foreground">{content.title}</h3>
+                  <p className="text-sm text-muted-foreground">{content.description}</p>
+                </Link>
+              )
+            })}
+          </div>
+          <div className="text-center mt-8">
+            <Link href="/blog" className="text-sm text-primary hover:underline">
+              {locale === 'pl' ? 'Zobacz wszystkie artykuły →' : 'See all articles →'}
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <footer className="border-t border-border py-8 px-6 text-center text-sm text-muted-foreground space-y-1">
         <p>© {new Date().getFullYear()} TrainerOS. {l.footer}</p>
         <p><a href="mailto:contact@traineros.live" className="hover:text-foreground transition-colors">contact@traineros.live</a></p>
         <p className="flex justify-center gap-4">
+          <Link href="/blog" className="hover:text-foreground transition-colors">Blog</Link>
           <Link href="/terms" className="hover:text-foreground transition-colors">Terms</Link>
           <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
         </p>
