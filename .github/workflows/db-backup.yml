@@ -1,0 +1,37 @@
+name: Database Backup
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: db-backups
+
+      - name: Install postgresql-client
+        run: sudo apt-get update -qq && sudo apt-get install -y postgresql-client
+
+      - name: Dump database
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          pg_dump "$SUPABASE_DB_URL" --no-owner --no-privileges | gzip > "backups/$(date +%Y-%m-%d).sql.gz"
+
+      - name: Prune backups older than 30 days
+        run: find backups -name '*.sql.gz' -mtime +30 -delete
+
+      - name: Commit and push
+        run: |
+          git config user.name "db-backup-bot"
+          git config user.email "actions@github.com"
+          git add backups
+          git diff --cached --quiet && echo "nothing to commit" || git commit -m "backup: $(date +%Y-%m-%d)"
+          git push origin db-backups
